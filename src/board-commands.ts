@@ -21,6 +21,7 @@ const king = 'king';
 const queen = 'queen';
 
 let board: Board = [];
+export let boardGrid: string[][] = [];
 let currentTurnTeam = '';
 
 export const setupBoard = () => {
@@ -55,7 +56,7 @@ export const setupBoard = () => {
 };
 
 export const printBoard = () => {
-    let boardCopy = [['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '']];
+    boardGrid = [['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '']];
 
     board.forEach((square, index) => {
         let piece = square.piece ? square.piece : null;
@@ -63,13 +64,13 @@ export const printBoard = () => {
         // console.debug(`piece: ${piece}`)
         if (piece === null) {
             // console.debug(`targeting boardcopy[${square.rank - 1}]`)
-            boardCopy[targetRank][index-(8*targetRank)] = `${square.file}${square.rank}`;
+            boardGrid[targetRank][index-(8*targetRank)] = `${square.file}${square.rank}`;
         } else {
             // console.debug(`targeting boardcopy[${square.rank - 1}]`)
-            boardCopy[targetRank][index-(8*targetRank)] = `${piece.symbol}`;
+            boardGrid[targetRank][index-(8*targetRank)] = `${piece.symbol}`;
         }
     });
-    console.table(boardCopy);
+    console.table(boardGrid);
 }
 export const movePiece = (fromFile: any, fromRank: any, toFile: any, toRank: any) => {
     const squareToMoveFrom = getSquare(fromFile, fromRank);
