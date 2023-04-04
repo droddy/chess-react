@@ -9,7 +9,7 @@ export const h = 'h';
 
 type Piece = { color?: string; description?: string; symbol?: string; startRank: any; startFile: any; }
 type Square = { piece?: Piece, rank: number, file: string }
-type Board = Square[]
+export type Board = Square[]
 
 const black = 'black';
 const white = 'white';
@@ -64,13 +64,14 @@ export const printBoard = () => {
         // console.debug(`piece: ${piece}`)
         if (piece === null) {
             // console.debug(`targeting boardcopy[${square.rank - 1}]`)
-            boardGrid[targetRank][index-(8*targetRank)] = `${square.file}${square.rank}`;
+            boardGrid[targetRank][index-(8*targetRank)] = ``;
         } else {
             // console.debug(`targeting boardcopy[${square.rank - 1}]`)
             boardGrid[targetRank][index-(8*targetRank)] = `${piece.symbol}`;
         }
     });
     console.table(boardGrid);
+    return boardGrid;
 }
 export const movePiece = (fromFile: any, fromRank: any, toFile: any, toRank: any) => {
     const squareToMoveFrom = getSquare(fromFile, fromRank);
