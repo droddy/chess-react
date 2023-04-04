@@ -20,34 +20,37 @@ const bishop = 'bishop';
 const king = 'king';
 const queen = 'queen';
 
-const Pieces =
-    [
-        { color: black, description: rook, symbol: '♜', startRank: 8, startFile: a }, { color: black, description: knight, symbol: '♞', startRank: 8, startFile: b }, { color: black, description: bishop, symbol: '♝', startRank: 8, startFile: c }, { color: black, description: king, symbol: '♚', startRank: 8, startFile: d }, { color: black, description: queen, symbol: '♛', startRank: 8, startFile: e }, { color: black, description: bishop, symbol: '♝', startRank: 8, startFile: f }, { color: black, description: knight, symbol: '♞', startRank: 8, startFile: g }, { color: black, description: rook, symbol: '♜', startRank: 8, startFile: h },
-        { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: a }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: b }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: c }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: d }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: e }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: f }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: g }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: h },
-        { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: a }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: b }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: c }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: d }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: e }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: f }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: g }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: h },
-        { color: white, description: rook, symbol: '♖', startRank: 1, startFile: a }, { color: white, description: knight, symbol: '♘', startRank: 1, startFile: b }, { color: white, description: bishop, symbol: '♗', startRank: 1, startFile: c }, { color: white, description: king, symbol: '♔', startRank: 1, startFile: d }, { color: white, description: queen, symbol: '♕', startRank: 1, startFile: e }, { color: white, description: bishop, symbol: '♗', startRank: 1, startFile: f }, { color: white, description: knight, symbol: '♘', startRank: 1, startFile: g }, { color: white, description: rook, symbol: '♖', startRank: 1, startFile: h },
-    ];
+let board: Board = [];
+let currentTurnTeam = '';
 
-let board: Board = [
-    { piece: undefined, rank: 8, file: a }, { piece: undefined, rank: 8, file: b }, { piece: undefined, rank: 8, file: c }, { piece: undefined, rank: 8, file: d }, { piece: undefined, rank: 8, file: e }, { piece: undefined, rank: 8, file: f }, { piece: undefined, rank: 8, file: g }, { piece: undefined, rank: 8, file: h },
-    { piece: undefined, rank: 7, file: a }, { piece: undefined, rank: 7, file: b }, { piece: undefined, rank: 7, file: c }, { piece: undefined, rank: 7, file: d }, { piece: undefined, rank: 7, file: e }, { piece: undefined, rank: 7, file: f }, { piece: undefined, rank: 7, file: g }, { piece: undefined, rank: 7, file: h },
-    { piece: undefined, rank: 6, file: a }, { piece: undefined, rank: 6, file: b }, { piece: undefined, rank: 6, file: c }, { piece: undefined, rank: 6, file: d }, { piece: undefined, rank: 6, file: e }, { piece: undefined, rank: 6, file: f }, { piece: undefined, rank: 6, file: g }, { piece: undefined, rank: 6, file: h },
-    { piece: undefined, rank: 5, file: a }, { piece: undefined, rank: 5, file: b }, { piece: undefined, rank: 5, file: c }, { piece: undefined, rank: 5, file: d }, { piece: undefined, rank: 5, file: e }, { piece: undefined, rank: 5, file: f }, { piece: undefined, rank: 5, file: g }, { piece: undefined, rank: 5, file: h },
-    { piece: undefined, rank: 4, file: a }, { piece: undefined, rank: 4, file: b }, { piece: undefined, rank: 4, file: c }, { piece: undefined, rank: 4, file: d }, { piece: undefined, rank: 4, file: e }, { piece: undefined, rank: 4, file: f }, { piece: undefined, rank: 4, file: g }, { piece: undefined, rank: 4, file: h },
-    { piece: undefined, rank: 3, file: a }, { piece: undefined, rank: 3, file: b }, { piece: undefined, rank: 3, file: c }, { piece: undefined, rank: 3, file: d }, { piece: undefined, rank: 3, file: e }, { piece: undefined, rank: 3, file: f }, { piece: undefined, rank: 3, file: g }, { piece: undefined, rank: 3, file: h },
-    { piece: undefined, rank: 2, file: a }, { piece: undefined, rank: 2, file: b }, { piece: undefined, rank: 2, file: c }, { piece: undefined, rank: 2, file: d }, { piece: undefined, rank: 2, file: e }, { piece: undefined, rank: 2, file: f }, { piece: undefined, rank: 2, file: g }, { piece: undefined, rank: 2, file: h },
-    { piece: undefined, rank: 1, file: a }, { piece: undefined, rank: 1, file: b }, { piece: undefined, rank: 1, file: c }, { piece: undefined, rank: 1, file: d }, { piece: undefined, rank: 1, file: e }, { piece: undefined, rank: 1, file: f }, { piece: undefined, rank: 1, file: g }, { piece: undefined, rank: 1, file: h },
-];
-
-let currentTurnTeam = white;
 export const setupBoard = () => {
     currentTurnTeam = white;
+    const Pieces =
+        [
+            { color: black, description: rook, symbol: '♜', startRank: 8, startFile: a }, { color: black, description: knight, symbol: '♞', startRank: 8, startFile: b }, { color: black, description: bishop, symbol: '♝', startRank: 8, startFile: c }, { color: black, description: king, symbol: '♚', startRank: 8, startFile: d }, { color: black, description: queen, symbol: '♛', startRank: 8, startFile: e }, { color: black, description: bishop, symbol: '♝', startRank: 8, startFile: f }, { color: black, description: knight, symbol: '♞', startRank: 8, startFile: g }, { color: black, description: rook, symbol: '♜', startRank: 8, startFile: h },
+            { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: a }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: b }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: c }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: d }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: e }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: f }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: g }, { color: black, description: pawn, symbol: '♟︎', startRank: 7, startFile: h },
+            { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: a }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: b }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: c }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: d }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: e }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: f }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: g }, { color: white, description: pawn, symbol: '♙', startRank: 2, startFile: h },
+            { color: white, description: rook, symbol: '♖', startRank: 1, startFile: a }, { color: white, description: knight, symbol: '♘', startRank: 1, startFile: b }, { color: white, description: bishop, symbol: '♗', startRank: 1, startFile: c }, { color: white, description: king, symbol: '♔', startRank: 1, startFile: d }, { color: white, description: queen, symbol: '♕', startRank: 1, startFile: e }, { color: white, description: bishop, symbol: '♗', startRank: 1, startFile: f }, { color: white, description: knight, symbol: '♘', startRank: 1, startFile: g }, { color: white, description: rook, symbol: '♖', startRank: 1, startFile: h },
+        ];
+
+    let initBoard: Board = [
+        { piece: undefined, rank: 8, file: a }, { piece: undefined, rank: 8, file: b }, { piece: undefined, rank: 8, file: c }, { piece: undefined, rank: 8, file: d }, { piece: undefined, rank: 8, file: e }, { piece: undefined, rank: 8, file: f }, { piece: undefined, rank: 8, file: g }, { piece: undefined, rank: 8, file: h },
+        { piece: undefined, rank: 7, file: a }, { piece: undefined, rank: 7, file: b }, { piece: undefined, rank: 7, file: c }, { piece: undefined, rank: 7, file: d }, { piece: undefined, rank: 7, file: e }, { piece: undefined, rank: 7, file: f }, { piece: undefined, rank: 7, file: g }, { piece: undefined, rank: 7, file: h },
+        { piece: undefined, rank: 6, file: a }, { piece: undefined, rank: 6, file: b }, { piece: undefined, rank: 6, file: c }, { piece: undefined, rank: 6, file: d }, { piece: undefined, rank: 6, file: e }, { piece: undefined, rank: 6, file: f }, { piece: undefined, rank: 6, file: g }, { piece: undefined, rank: 6, file: h },
+        { piece: undefined, rank: 5, file: a }, { piece: undefined, rank: 5, file: b }, { piece: undefined, rank: 5, file: c }, { piece: undefined, rank: 5, file: d }, { piece: undefined, rank: 5, file: e }, { piece: undefined, rank: 5, file: f }, { piece: undefined, rank: 5, file: g }, { piece: undefined, rank: 5, file: h },
+        { piece: undefined, rank: 4, file: a }, { piece: undefined, rank: 4, file: b }, { piece: undefined, rank: 4, file: c }, { piece: undefined, rank: 4, file: d }, { piece: undefined, rank: 4, file: e }, { piece: undefined, rank: 4, file: f }, { piece: undefined, rank: 4, file: g }, { piece: undefined, rank: 4, file: h },
+        { piece: undefined, rank: 3, file: a }, { piece: undefined, rank: 3, file: b }, { piece: undefined, rank: 3, file: c }, { piece: undefined, rank: 3, file: d }, { piece: undefined, rank: 3, file: e }, { piece: undefined, rank: 3, file: f }, { piece: undefined, rank: 3, file: g }, { piece: undefined, rank: 3, file: h },
+        { piece: undefined, rank: 2, file: a }, { piece: undefined, rank: 2, file: b }, { piece: undefined, rank: 2, file: c }, { piece: undefined, rank: 2, file: d }, { piece: undefined, rank: 2, file: e }, { piece: undefined, rank: 2, file: f }, { piece: undefined, rank: 2, file: g }, { piece: undefined, rank: 2, file: h },
+        { piece: undefined, rank: 1, file: a }, { piece: undefined, rank: 1, file: b }, { piece: undefined, rank: 1, file: c }, { piece: undefined, rank: 1, file: d }, { piece: undefined, rank: 1, file: e }, { piece: undefined, rank: 1, file: f }, { piece: undefined, rank: 1, file: g }, { piece: undefined, rank: 1, file: h },
+    ];
+
+    board = [...initBoard];
 
     Pieces.forEach(piece => {
 
         let foundStartSquare = getPieceStartingSquare(piece);
 
-        if (foundStartSquare) foundStartSquare.piece = piece;
+        if (foundStartSquare !== undefined) foundStartSquare.piece = piece;
     })
 };
 
@@ -114,27 +117,27 @@ const toggleCurrentTurnTeam = () => {
 }
 const getFile = (x: number) => {
     switch (x) {
-        case 1: { return a; }
-        case 2: { return b; }
-        case 3: { return c; }
-        case 4: { return d; }
-        case 5: { return e; }
-        case 6: { return f; }
-        case 7: { return g; }
-        case 8: { return h; }
+        case 0: { return a; }
+        case 1: { return b; }
+        case 2: { return c; }
+        case 3: { return d; }
+        case 4: { return e; }
+        case 5: { return f; }
+        case 6: { return g; }
+        case 7: { return h; }
     }
     throw new Error('could not match x to file string')
 }
 const getX = (file: string) => {
     switch (file) {
-        case a: { return 1; }
-        case b: { return 2; }
-        case c: { return 3; }
-        case d: { return 4; }
-        case e: { return 5; }
-        case f: { return 6; }
-        case g: { return 7; }
-        case h: { return 8; }
+        case a: { return 0; }
+        case b: { return 1; }
+        case c: { return 2; }
+        case d: { return 3; }
+        case e: { return 4; }
+        case f: { return 5; }
+        case g: { return 6; }
+        case h: { return 7; }
     }
     throw new Error('could not match file string to x')
 }
@@ -168,22 +171,22 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, pieceTo
     const deltaFile = Math.sign(endFileX - startFileX);
     let currentRank = startRank + deltaRank;
     let currentFileX = startFileX + deltaFile;
-    let currentFile = getFile(currentFileX);
-    // console.debug(`currentRank: ${currentRank}`)
-    // console.debug(`currentFileX: ${currentFileX}`)
-    // console.debug(`deltaRank: ${deltaRank}`)
-    // console.debug(`deltaFile: ${deltaFile}`)
+    console.debug(`currentRank: ${currentRank}`)
+    console.debug(`currentFileX: ${currentFileX}`)
+    console.debug(`deltaRank: ${deltaRank}`)
+    console.debug(`deltaFile: ${deltaFile}`)
     while (currentRank !== endRank || currentFileX !== endFileX) {
+        let currentFile = getFile(currentFileX);
+        console.debug(`currentFile: ${currentFile}`)
 
-        // console.debug(`checking for blocked move at x,y - ${currentFileX},${currentRank}`)
+        console.debug(`checking for blocked move at x,y - ${currentFileX},${currentRank}`)
         let currentSquare = getSquare(currentFile, currentRank);
-        if (currentSquare && currentSquare.piece === undefined) {
+        if (currentSquare && currentSquare.piece !== undefined) {
             console.log(`found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`)
             return true;
         }
         currentRank += deltaRank;
         currentFileX += deltaFile;
-        currentFile = getFile(currentFileX);
     }
     return false;
 }
@@ -344,7 +347,7 @@ const getPieceStartingSquare = (piece: Piece) => {
         && square.file === piece.startFile);
 }
 
-const getSquare = (file: string, rank: string | number): Square | undefined => {
+const getSquare = (file: string, rank: number): Square | undefined => {
     return board.find(square => square.file === file
         && square.rank === rank)
 };
