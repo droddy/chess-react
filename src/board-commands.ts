@@ -95,7 +95,7 @@ const getRankDiff = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 }
 const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: Board) => {
     if (!squareToMoveFrom.piece) throw new Error('squareToMoveFrom must have a piece in it')
-    console.log(`from ${squareToMoveFrom.file}${squareToMoveFrom.rank} to ${squareToMoveTo.file}${squareToMoveTo.rank}`)
+    // console.log(`from ${squareToMoveFrom.file}${squareToMoveFrom.rank} to ${squareToMoveTo.file}${squareToMoveTo.rank}`)
     // Check for any pieces between start and end squares
     if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
 
@@ -105,15 +105,15 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
     const deltaFile = Math.sign(endFileX - startFileX);
     let currentRank = startRank + deltaRank;
     let currentFileX = startFileX + deltaFile;
-    console.debug(`currentRank: ${currentRank}`)
-    console.debug(`currentFileX: ${currentFileX}`)
-    console.debug(`deltaRank: ${deltaRank}`)
-    console.debug(`deltaFile: ${deltaFile}`)
+    // console.debug(`currentRank: ${currentRank}`)
+    // console.debug(`currentFileX: ${currentFileX}`)
+    // console.debug(`deltaRank: ${deltaRank}`)
+    // console.debug(`deltaFile: ${deltaFile}`)
     while (currentRank !== endRank || currentFileX !== endFileX) {
         let currentFile = getFile(currentFileX);
-        console.debug(`currentFile: ${currentFile}`)
+        // console.debug(`currentFile: ${currentFile}`)
 
-        console.debug(`checking for blocked move at x,y - ${currentFileX},${currentRank}`)
+        // console.debug(`checking for blocked move at x,y - ${currentFileX},${currentRank}`)
         let currentSquare = getSquare(currentFile, currentRank, board);
         if (currentSquare && currentSquare.piece !== undefined) {
             console.log(`found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`)
@@ -279,6 +279,7 @@ const getSquare = (file: File, rank: Rank, board: Board): Square | undefined => 
 // }
 
 const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, board: Board, currentTeam: Team) => {
+    console.log(`board-commands -- request to move ${fromFile}${fromRank} to ${toFile}${toRank}`)
     const squareToMoveFrom = getSquare(fromFile, fromRank, board);
     if (!squareToMoveFrom) throw new Error('cannot determin squareToMoveFrom');
 

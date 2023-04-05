@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Square } from '../board-commands';
 
 interface squareProps { value: string, columnIndex: number, rowIndex: number };
