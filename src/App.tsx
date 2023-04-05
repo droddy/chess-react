@@ -1,58 +1,73 @@
-import { useState } from 'react';
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
+// import logo from './logo.svg';
 import './App.css';
-import { setupBoard, printBoard, movePiece, e, f, b } from './board-commands';
+import { Team, getNewBoard, movePiece, File, Rank, Board } from './board-commands';
 
 function App() {
-  setupBoard();
-  let boardState = printBoard();
+  const [currentTeam, setCurrentTeam] = useState(Team.white);
+  const [board, setBoard] = useState(getNewBoard());
+  const [boardGrid, setBoardGrid] = useState([['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '']]);
+  const [moveIndex, setMoveIndex] = useState(0);
+  
+  const reprintBoard = () => {
+    let boardGridCopy = [...boardGrid];
+    board.forEach((square, index) => {
+      let piece = square.piece ? square.piece : null;
+      let targetRank = Math.abs(square.rank - 8);
+      // console.debug(`piece: ${piece}`)
+      if (piece === null) {
+        // console.debug(`targeting boardcopy[${square.rank - 1}]`)
+        boardGridCopy[targetRank][index - (8 * targetRank)] = ``;
+      } else {
+        // console.debug(`targeting boardcopy[${square.rank - 1}]`)
+        boardGridCopy[targetRank][index - (8 * targetRank)] = `${piece.symbol}`;
+      }
+    });
+    console.table(boardGridCopy);
+    setBoardGrid(boardGridCopy);
+  };
 
-  console.clear();
-  setTimeout(() => {
-    // WHITE TURN
-    console.log('app -- e2-e4 -- Legal');
-    movePiece(e, 2, e, 4) // this should work as the first move of white 
-    boardState = printBoard();
-  }, 5000);
+  let testMoves: any[][] = [];
+  testMoves.push([File.e, Rank.two, File.e, Rank.four])// WHITE TURN - this should work as the first move of white
+  testMoves.push([File.f, Rank.two, File.f, Rank.four])// ILLEGAL TURN - this should not work because the turn should be black
+  testMoves.push([File.e, Rank.seven, File.e, Rank.five])// BLACK TURN - this should work for black's first move
+  testMoves.push([File.e, Rank.four, File.e, Rank.five])// ILLEGAL WHITE TURN - this should not work for white pawn to capture straight ahead
+  testMoves.push([File.b, Rank.two, File.b, Rank.three])// WHITE TURN - this should work for white pawn to move one space forward
 
-  setTimeout(() => {
-    // ILLEGAL TURN
-    console.log('app -- f2-f4 -- ILLEGAL - Wrong Team');
-    movePiece(f, 2, f, 4) // this should not work because the turn should be black
-    boardState = printBoard();
+  const nextMove = () => {
+    const newBoard = movePiece(testMoves[moveIndex][0], testMoves[moveIndex][1], testMoves[moveIndex][2], testMoves[moveIndex][3], board, currentTeam);
+    if(!!newBoard) setBoard(newBoard);
+    reprintBoard();
+    setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
+    setMoveIndex(moveIndex + 1);
+  }
 
-  }, 10000);
-
-
-
-  // // BLACK TURN
-  // console.log('app -- e7-e5 -- Legal');
-  // movePiece(e, 7, e, 5) // this should work for black's first move
-  // printBoard();
-
-  // // ILLEGAL WHITE TURN
-  // console.log('app -- e4-e5 -- ILLEGAL - pawn, capture not diagonal');
-  // movePiece(e, 4, e, 5) // this should not work for white pawn to capture straight ahead
-  // printBoard();
-
-  // // WHITE TURN
-  // console.log('');
-  // console.log('app -- b2-b3 -- Legal');
-  // movePiece(b, 2, b, 3) // this should work for white pawn to move one space forward
-  // printBoard();
-
+  const resetBoard = () => {
+    setBoard(getNewBoard());
+    reprintBoard();
+  }
+  
   return (
     <div className="App">
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <table className="dataintable">
           <tbody>
-            {boardState && boardState.map((row, rowI) => {
+            {boardGrid && boardGrid.map((row, rowI) => {
               return (
                 <tr key={`row-${rowI}`}>
                   {row.map((squatter, columnI) => {
                     return (
-                      <td className={rowI % 2 ? columnI % 2 ? 'App-board-cell-black' : 'App-board-cell' : columnI % 2 ? 'App-board-cell' : 'App-board-cell-black'} key={`column-${rowI}-${columnI}`}>{squatter}</td>
+                      <td
+                        className={
+                          rowI % 2
+                            ? columnI % 2
+                              ? 'App-board-cell-black'
+                              : 'App-board-cell'
+                            : columnI % 2
+                              ? 'App-board-cell'
+                              : 'App-board-cell-black'}
+                        key={`column-${rowI}-${columnI}`}>{squatter}</td>
                     );
                   })}
                 </tr>
@@ -60,6 +75,8 @@ function App() {
             })}
           </tbody>
         </table>
+        <button onClick={nextMove}>make a move</button><br />
+        <button onClick={resetBoard} >reset board</button>
       </header>
     </div>
   );
