@@ -27,7 +27,7 @@ const getNewBoard = () => {
             { color: Team.white, description: PieceDescription.rook, symbol: '♖', startRank: Rank.one, startFile: File.a }, { color: Team.white, description: PieceDescription.knight, symbol: '♘', startRank: Rank.one, startFile: File.b }, { color: Team.white, description: PieceDescription.bishop, symbol: '♗', startRank: Rank.one, startFile: File.c }, { color: Team.white, description: PieceDescription.king, symbol: '♔', startRank: Rank.one, startFile: File.d }, { color: Team.white, description: PieceDescription.queen, symbol: '♕', startRank: Rank.one, startFile: File.e }, { color: Team.white, description: PieceDescription.bishop, symbol: '♗', startRank: Rank.one, startFile: File.f }, { color: Team.white, description: PieceDescription.knight, symbol: '♘', startRank: Rank.one, startFile: File.g }, { color: Team.white, description: PieceDescription.rook, symbol: '♖', startRank: Rank.one, startFile: File.h },
         ];
 
-    let initBoard: Board = [
+    const initBoard: Board = [
         { piece: undefined, rank: Rank.eight, file: File.a }, { piece: undefined, rank: Rank.eight, file: File.b }, { piece: undefined, rank: Rank.eight, file: File.c }, { piece: undefined, rank: Rank.eight, file: File.d }, { piece: undefined, rank: Rank.eight, file: File.e }, { piece: undefined, rank: Rank.eight, file: File.f }, { piece: undefined, rank: Rank.eight, file: File.g }, { piece: undefined, rank: Rank.eight, file: File.h },
         { piece: undefined, rank: Rank.seven, file: File.a }, { piece: undefined, rank: Rank.seven, file: File.b }, { piece: undefined, rank: Rank.seven, file: File.c }, { piece: undefined, rank: Rank.seven, file: File.d }, { piece: undefined, rank: Rank.seven, file: File.e }, { piece: undefined, rank: Rank.seven, file: File.f }, { piece: undefined, rank: Rank.seven, file: File.g }, { piece: undefined, rank: Rank.seven, file: File.h },
         { piece: undefined, rank: Rank.six, file: File.a }, { piece: undefined, rank: Rank.six, file: File.b }, { piece: undefined, rank: Rank.six, file: File.c }, { piece: undefined, rank: Rank.six, file: File.d }, { piece: undefined, rank: Rank.six, file: File.e }, { piece: undefined, rank: Rank.six, file: File.f }, { piece: undefined, rank: Rank.six, file: File.g }, { piece: undefined, rank: Rank.six, file: File.h },
@@ -40,13 +40,13 @@ const getNewBoard = () => {
 
     Pieces.forEach(piece => {
         let foundStartSquare = getPieceStartingSquare(piece, initBoard);
-        if (foundStartSquare !== undefined) foundStartSquare.piece = piece;
+        if (!!foundStartSquare) foundStartSquare.piece = piece;
     });
 
     return initBoard;
 };
 type Piece = { color?: Team; description?: PieceDescription; symbol?: string; startRank: Rank; startFile: File; };
-type Square = { piece?: Piece, rank: Rank, file: File };
+export type Square = { piece?: Piece, rank: Rank, file: File };
 type Board = Square[];
 const getFile = (x: number) => {
     switch (x) {
