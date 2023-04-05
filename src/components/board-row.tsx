@@ -1,22 +1,33 @@
-import { FC } from 'react';
-import { Square } from '../board-commands';
+import { FC, useRef } from 'react';
+import { Square, Team } from '../board-commands';
 
-interface squareProps { value: string, columnIndex: number, rowIndex: number };
+interface squareProps { square: Square };
 
-const BoardSquare: FC<squareProps> = ({ value: squatter, columnIndex, rowIndex }) => {
+
+const BoardSquare: FC<squareProps> = ({ square }) => {
+    const node = useRef(null);
+    const symbol = square.piece?.symbol || '';
+    const symbolNotClicked = 'App-symbolNotClicked';
+    const symbolHeld = 'App-symbolHeld';
+
+    const updateSquareClass = (event: React.MouseEvent<Element, MouseEvent>) => {
+        console.log('piece clicked on');
+
+        console.log(`replacing class ${symbolNotClicked} with ${symbolHeld}`)
+        event.currentTarget.classList.toggle(symbolNotClicked);
+        event.currentTarget.classList.toggle(symbolHeld);
+    }
+
     return (
         <>
-            <td
-                className={rowIndex % 2
-                    ? columnIndex % 2
-                        ? 'App-board-cell-black'
-                        : 'App-board-cell'
-                    : columnIndex % 2
-                        ? 'App-board-cell'
-                        : 'App-board-cell-black'}
-            >{squatter}</td>
+            <td ref={node}
+                className={
+                    (square.color === Team.black
+                        ? ' App-board-cell-black'
+                        : ' App-board-cell') + ` ${symbolNotClicked}`}
+                onClick={updateSquareClass}
+            ><span className={`App-symbol`}>{symbol}</span></td>
         </>
-
     );
 };
 
@@ -29,9 +40,7 @@ const BoardRow: FC<rowProps> = ({ row, rowIndex }) => {
                 {
                     row.map((square, columnIndex) =>
                         <BoardSquare
-                            value={square.piece?.symbol || ''}
-                            rowIndex={rowIndex}
-                            columnIndex={columnIndex}
+                            square={square}
                             key={`row-${rowIndex}-column-${columnIndex}`} />
                     )}
             </tr>

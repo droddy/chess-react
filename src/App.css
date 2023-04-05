@@ -29,25 +29,87 @@
 }
 
 .App-board-cell {
-  width:80px;
-  height:80px;
+  width: 80px;
+  height: 80px;
   background-color: white;
-  color:darkgray;
-  font-size:2em;
+  color: darkgray;
+  font-size: 2em;
 }
+
 .App-board-cell-black {
-  width:80px;
-  height:80px;
+  width: 80px;
+  height: 80px;
   background-color: black;
   color: lightgray;
-  font-size:2em;
+  font-size: 2em;
 }
 
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  10% {
+    transform: rotate(2deg);
+  }
+
+  20% {
+    transform: rotate(-2deg);
+  }
+
+  30% {
+    transform: rotate(4deg);
+  }
+
+  40% {
+    transform: rotate(-4deg);
+  }
+
+  50% {
+    transform: rotate(8deg);
+  }
+
+  60% {
+    transform: rotate(-8deg);
+  }
+
+  70% {
+    transform: rotate(10deg);
+  }
+
+  80% {
+    transform: rotate(-10deg);
+  }
+
+  90% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.App-symbol:hover {
+  display: inline-block;
+  animation: wiggle .75s infinite;
+}
+
+.App-symbolNotClicked {
+  cursor: grab;
+
+}
+
+.App-symbolHeld {
+  cursor: crosshair;
 }
