@@ -1,32 +1,13 @@
 import { useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import { Team, getNewBoard, movePiece, File, Rank, Board } from './board-commands';
+import { Team, getNewBoard, movePiece, File, Rank, Square } from './board-commands';
 import BoardRow from './components/board-row';
 
 function App() {
   const [currentTeam, setCurrentTeam] = useState(Team.white);
   const [board, setBoard] = useState(getNewBoard());
-  // const [boardGrid, setBoardGrid] = useState([['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '']]);
   const [moveIndex, setMoveIndex] = useState(0);
-
-  // const reprintBoard = () => {
-  //   let boardGridCopy = [...boardGrid];
-  //   board.forEach((square, index) => {
-  //     let piece = square.piece ? square.piece : null;
-  //     let targetRank = Math.abs(square.rank - 8);
-  //     // console.debug(`piece: ${piece}`)
-  //     if (piece === null) {
-  //       // console.debug(`targeting boardcopy[${square.rank - 1}]`)
-  //       boardGridCopy[targetRank][index - (8 * targetRank)] = ``;
-  //     } else {
-  //       // console.debug(`targeting boardcopy[${square.rank - 1}]`)
-  //       boardGridCopy[targetRank][index - (8 * targetRank)] = `${piece.symbol}`;
-  //     }
-  //   });
-  //   console.table(boardGridCopy);
-  //   setBoardGrid(boardGridCopy);
-  // };
 
   let testMoves: any[][] = [];
   testMoves.push([File.e, Rank.two, File.e, Rank.four])// WHITE TURN - this should work as the first move of white
@@ -55,9 +36,6 @@ function App() {
   testMoves.push([File.b, Rank.seven, File.b, Rank.six]) // LEGAL Black TURN 
   testMoves.push([File.f, 1, File.f, 2]) // ILLEGAL WHITE TURN - bishop move not diagonal
 
-
-
-
   const nextMove = () => {
     console.debug(`current team is : ${currentTeam}`)
     const newBoard = movePiece(testMoves[moveIndex][0], testMoves[moveIndex][1], testMoves[moveIndex][2], testMoves[moveIndex][3], board, currentTeam);
@@ -67,6 +45,17 @@ function App() {
     }
     setMoveIndex(moveIndex + 1);
   }
+
+  const move = (fromSquare: Square, toSquare: Square) => {
+    console.debug(`current team is : ${currentTeam}`);
+    const newBoard = movePiece(fromSquare.file, fromSquare.rank, toSquare.file, toSquare.rank, board, currentTeam);
+    if (!!newBoard) {
+      setBoard(newBoard);
+      setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
+    }
+    setMoveIndex(moveIndex + 1);
+  }
+
 
   const resetBoard = () => {
     console.clear();
@@ -83,23 +72,26 @@ function App() {
         <BoardRow
           row={board.filter((square) => square.rank === i)}
           rowIndex={i}
-          key={`row-${i}`} />
+          key={`row-${i}`}
+          moveHandler={move} />
       );
     }
     return rows;
+  }
+  const clickBoard = (event: React.MouseEvent<Element, MouseEvent>) => {
+    event.currentTarget.classList.toggle('App-boardNotClicked');
+    event.currentTarget.classList.toggle('App-boardSymbolHeld');
   }
 
   return (
     <div className="App">
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <table className="dataintable">
-          <tbody>
+        <table className="dataintable" >
+          <tbody className='App-boardNotClicked' onClick={clickBoard}>
             {board ? printRows() : null}
           </tbody>
-
         </table>
-        <button onClick={nextMove}>make a move</button><br />
         <button onClick={resetBoard} >reset board</button>
       </header>
     </div>

@@ -100,16 +100,19 @@
   }
 }
 
-.App-symbol:hover {
+.App-symbol {
   display: inline-block;
+  /* animation: wiggle .75s infinite; */
+}
+.App-boardNotClicked {
+  cursor: grab;
+}
+.App-symbolNotClicked {
+  animation: none;
+}
+.App-symbolHeld {
   animation: wiggle .75s infinite;
 }
-
-.App-symbolNotClicked {
-  cursor: grab;
-
-}
-
-.App-symbolHeld {
+.App-boardSymbolHeld {
   cursor: crosshair;
 }
