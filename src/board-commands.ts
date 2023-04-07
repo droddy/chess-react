@@ -28,38 +28,38 @@ const getNewBoard = () => {
         ];
 
     const initBoard: Board = [
-        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.b }, 
-        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.d }, 
-        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.f }, 
-        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.h }, 
-        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.b }, 
-        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.d }, 
-        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.f }, 
-        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.h }, 
-        { color: Team.black, piece: undefined, rank: Rank.six, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.b }, 
-        { color: Team.black, piece: undefined, rank: Rank.six, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.d }, 
-        { color: Team.black, piece: undefined, rank: Rank.six, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.f }, 
-        { color: Team.black, piece: undefined, rank: Rank.six, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.h }, 
-        { color: Team.white, piece: undefined, rank: Rank.five, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.b }, 
-        { color: Team.white, piece: undefined, rank: Rank.five, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.d }, 
-        { color: Team.white, piece: undefined, rank: Rank.five, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.f }, 
-        { color: Team.white, piece: undefined, rank: Rank.five, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.h }, 
-        { color: Team.black, piece: undefined, rank: Rank.four, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.b }, 
-        { color: Team.black, piece: undefined, rank: Rank.four, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.d }, 
-        { color: Team.black, piece: undefined, rank: Rank.four, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.f }, 
-        { color: Team.black, piece: undefined, rank: Rank.four, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.h }, 
-        { color: Team.white, piece: undefined, rank: Rank.three, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.b }, 
-        { color: Team.white, piece: undefined, rank: Rank.three, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.d }, 
-        { color: Team.white, piece: undefined, rank: Rank.three, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.f }, 
-        { color: Team.white, piece: undefined, rank: Rank.three, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.h }, 
-        { color: Team.black, piece: undefined, rank: Rank.two, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.b }, 
-        { color: Team.black, piece: undefined, rank: Rank.two, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.d }, 
-        { color: Team.black, piece: undefined, rank: Rank.two, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.f }, 
-        { color: Team.black, piece: undefined, rank: Rank.two, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.h }, 
-        { color: Team.white, piece: undefined, rank: Rank.one, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.b }, 
-        { color: Team.white, piece: undefined, rank: Rank.one, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.d }, 
-        { color: Team.white, piece: undefined, rank: Rank.one, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.f }, 
-        { color: Team.white, piece: undefined, rank: Rank.one, file: File.g },  { color: Team.black, piece: undefined, rank: Rank.one, file: File.h }
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.h },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.h },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.h },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.h }
     ];
     Pieces.forEach(piece => {
         let foundStartSquare = getPieceStartingSquare(piece, initBoard);
@@ -100,10 +100,12 @@ const getX = (fileIndex: File) => {
 const getFileDiff = (fromFile: File, toFile: File) => {
     const fromNum = getX(fromFile);
     const toNum = getX(toFile);
+    /* #region console.debug */
     // console.debug(`squareToMoveFrom.file: ${squareToMoveFrom.file}`)
     // console.debug(`squareToMoveTo.file: ${squareToMoveTo.file}`)
     // console.debug(`fromNum: ${fromNum}`)
     // console.debug(`toNum: ${toNum}`)
+    /* #endregion */
     return fromNum - toNum;
 }
 const getRankDiff = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
@@ -118,9 +120,11 @@ const getRankDiff = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 }
 const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: Board) => {
     if (!squareToMoveFrom.piece) throw new Error('squareToMoveFrom must have a piece in it')
+ /* #region console.debug */
     // console.log(`from ${squareToMoveFrom.file}${squareToMoveFrom.rank} to ${squareToMoveTo.file}${squareToMoveTo.rank}`)
     // Check for any pieces between start and end squares
-    if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
+
+ /* #endregion */    if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
 
     const [startRank, startFileX] = [squareToMoveFrom.rank, getX(squareToMoveFrom.file)];
     const [endRank, endFileX] = [squareToMoveTo.rank, getX(squareToMoveTo.file)];
@@ -128,15 +132,20 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
     const deltaFile = Math.sign(endFileX - startFileX);
     let currentRank = startRank + deltaRank;
     let currentFileX = startFileX + deltaFile;
+    /* #region console.debug */
     // console.debug(`currentRank: ${currentRank}`)
     // console.debug(`currentFileX: ${currentFileX}`)
     // console.debug(`deltaRank: ${deltaRank}`)
     // console.debug(`deltaFile: ${deltaFile}`)
+    /* #endregion */
     while (currentRank !== endRank || currentFileX !== endFileX) {
         let currentFile = getFile(currentFileX);
-        // console.debug(`currentFile: ${currentFile}`)
 
+        /* #region console.debug */
+        // console.debug(`currentFile: ${currentFile}`)
         // console.debug(`checking for blocked move at x,y - ${currentFileX},${currentRank}`)
+        /* #endregion */
+
         let currentSquare = getSquare(currentFile, currentRank, board);
         if (currentSquare && currentSquare.piece !== undefined) {
             console.log(`found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`)
@@ -173,6 +182,7 @@ const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     return true;
 }
 
+/* #region isKingMoveTargetUnderAttack */
 // const isKingMoveTargetUnderAttack = (targetSquare: { file: any; rank: number; }, kingColor: any) => {
 //     // if (!square.piece) throw Error('no piece to test if attacked')
 //     // if (square.piece.description !== king) throw Error('do not call isKingTargetUnderAttack for a square that does not have a king')
@@ -202,6 +212,7 @@ const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 //         }
 //     }
 // }
+/* #endregion */
 
 const isLegalBishopMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
@@ -254,9 +265,11 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
         return false;
     }
 
+    /* #region console.debug */
     // console.log(`rankDiff: ${rankDiff}`)
     // console.debug(`squareToMoveFrom.rank: ${squareToMoveFrom.rank}`)
     // console.debug(`squareToMoveFrom.piece.startRank: ${squareToMoveFrom.piece.startRank}`)
+    /* #endregion */
     if (rankDiff === 2 && squareToMoveFrom.rank !== squareToMoveFrom.piece.startRank) {
         console.log('pawn can only make 2-space-move from starting position')
         return false
@@ -267,18 +280,22 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     // console.log(`fileDiff: ${fileDiff}`)
     if (fileDiff === 0 && squareToMoveTo.piece) {
         console.log('Pawn may only capture on the diagonal 1')
+        /* #region console.debug */
         // console.debug(`squareToMoveTo: ${JSON.stringify(squareToMoveTo)}`)
         // console.debug(`squareToMoveFrom: ${JSON.stringify(squareToMoveFrom)}`)
         // console.debug(`fileDiff`)
+        /* #endregion */
         return false;
     }
 
     // console.debug(`squareToMoveTo.piece: ${squareToMoveTo.piece}`)
     if (fileDiff === 1 && !squareToMoveTo.piece) {
         console.log('Pawn may only capture on the diagonal 2')
+        /* #region console.debug */
         // console.debug(`squareToMoveTo: ${JSON.stringify(squareToMoveTo)}`)
         // console.debug(`squareToMoveFrom: ${JSON.stringify(squareToMoveFrom)}`)
         // console.debug(`fileDiff`)
+        /* #endregion */
         return false;
     }
     // TODO -- EN PASSENT
