@@ -72,7 +72,9 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
     // console.log(`from ${squareToMoveFrom.file}${squareToMoveFrom.rank} to ${squareToMoveTo.file}${squareToMoveTo.rank}`)
     // Check for any pieces between start and end squares
 
-    /* #endregion */    if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
+    /* #endregion */    
+    
+    if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
 
     const [startRank, startFileX] = [squareToMoveFrom.rank, fileToNum(squareToMoveFrom.file)];
     const [endRank, endFileX] = [squareToMoveTo.rank, fileToNum(squareToMoveTo.file)];
