@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react';
-import { Square, Team } from '../board-commands';
+import { Team } from '../board-commands';
+import { Square } from '../types';
 
-interface squareProps { square: Square, moveHandler: (fromSquare: Square, toSquare: Square) => void };
+type squareProps = { square: Square, moveHandler: (fromSquare: Square, toSquare: Square) => void }
 
 let firstClickedSquare: string | undefined = undefined;
 
@@ -9,24 +10,24 @@ const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
     const symbol = square.piece?.symbol || '';
     const symbolNotClicked = 'App-symbolNotClicked';
     const symbolHeld = 'App-symbolHeld';
-    const [pieceClass, setPieceClass] = useState(symbolNotClicked)
+    const [pieceClass, setPieceClass] = useState(symbolNotClicked);
 
     const clickSquare = (event: React.MouseEvent<Element, MouseEvent>) => {
 
         const clickedSquare = event.currentTarget.getAttribute('data-square');
         console.debug('clickedSquare:');
-        console.debug(JSON.stringify(clickSquare));
+        console.debug(JSON.stringify(clickedSquare));
 
-        if (!!clickedSquare) {
+        if (clickedSquare) {
 
-            if (!!firstClickedSquare) {
+            if (firstClickedSquare) {
                 /* #region console.debug */
                 // console.debug('second click')
                 // console.debug('firstClickedSquare:');
                 /* #endregion */
                 console.debug(JSON.stringify(firstClickedSquare));
 
-                setPieceClass(symbolNotClicked)
+                setPieceClass(symbolNotClicked);
                 moveHandler(JSON.parse(firstClickedSquare), JSON.parse(clickedSquare));
                 console.debug('resetting clickCount');
                 firstClickedSquare = undefined;
@@ -39,7 +40,7 @@ const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
             /* #endregion */
             firstClickedSquare = clickedSquare;
         }
-    }
+    };
     const clickPiece = (event: React.MouseEvent<Element, MouseEvent>) => {
         // event.currentTarget.classList.toggle(symbolNotClicked);
         // event.currentTarget.classList.toggle(symbolHeld);
@@ -47,11 +48,11 @@ const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
             if (current === symbolNotClicked) return symbolHeld;
             return symbolNotClicked;
         });
-    }
+    };
 
     useEffect(() => {
-        setPieceClass(symbolNotClicked)
-    }, [square])
+        setPieceClass(symbolNotClicked);
+    }, [square]);
 
     return (
         <>
@@ -71,7 +72,7 @@ const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
     );
 };
 
-interface rowProps { row: Square[], rowIndex: number, moveHandler: (fromSquare: Square, toSquare: Square) => void }
+type rowProps = { row: Square[], rowIndex: number, moveHandler: (fromSquare: Square, toSquare: Square) => void }
 
 const BoardRow: FC<rowProps> = ({ row, rowIndex, moveHandler }) => {
     return (
@@ -88,6 +89,6 @@ const BoardRow: FC<rowProps> = ({ row, rowIndex, moveHandler }) => {
         </>
     );
 
-}
+};
 
 export default BoardRow;

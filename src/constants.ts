@@ -1,6 +1,6 @@
-import { Board } from "./board-commands";
-import { Team, PieceDescription, Rank, File } from "./enum";
-import { Piece } from "./types";
+import { Board } from './board-commands';
+import { Team, PieceDescription, Rank, File } from './enum';
+import { Piece } from './types';
 
 export const Pieces: Piece[] =
     [
