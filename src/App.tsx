@@ -1,9 +1,8 @@
 import { useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import { Team, getNewBoard, movePiece } from './board-commands';
+import { Team, getNewBoard, movePiece, File, Rank, Square } from './board-commands';
 import BoardRow from './components/board-row';
-import { Square } from './types';
 
 function App() {
     const [currentTeam, setCurrentTeam] = useState(Team.white);
@@ -49,15 +48,16 @@ function App() {
     // }
     /* #endregion */
 
-    const move = (fromSquare: Square, toSquare: Square) => {
-        console.debug(`current team is : ${currentTeam}`);
-        const newBoard = movePiece(fromSquare.file, fromSquare.rank, toSquare.file, toSquare.rank, board, currentTeam);
-        if (newBoard) {
-            setBoard(newBoard);
-            setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
-        }
-        setMoveIndex(moveIndex + 1);
-    };
+  const move = (fromSquare: Square, toSquare: Square) => {
+    console.debug(`current team is : ${currentTeam}`);
+    const newBoard = movePiece(fromSquare.file, fromSquare.rank, toSquare.file, toSquare.rank, board, currentTeam);
+    if (!!newBoard) {
+      setBoard(newBoard);
+      setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
+    }
+    setMoveIndex(moveIndex + 1);
+  }
+
 
     const resetBoard = () => {
         console.clear();
@@ -66,23 +66,24 @@ function App() {
         setMoveIndex(0);
     };
 
-    const printRows = () => {
-        const rows = [];
-        for (let i = 8; i > 0; i--) {
-            rows.push(
-                <BoardRow
-                    row={board.filter((square) => square.rank === i)}
-                    rowIndex={i}
-                    key={`row-${i}`}
-                    moveHandler={move} />
-            );
-        }
-        return rows;
-    };
-    const clickBoard = (event: React.MouseEvent<Element, MouseEvent>) => {
-        event.currentTarget.classList.toggle('App-boardNotClicked');
-        event.currentTarget.classList.toggle('App-boardSymbolHeld');
-    };
+  const printRows = () => {
+    let rows = [];
+    for (let i = 8; i > 0; i--) {
+      // console.debug(`returning row ${i}`);
+      rows.push(
+        <BoardRow
+          row={board.filter((square) => square.rank === i)}
+          rowIndex={i}
+          key={`row-${i}`}
+          moveHandler={move} />
+      );
+    }
+    return rows;
+  }
+  const clickBoard = (event: React.MouseEvent<Element, MouseEvent>) => {
+    event.currentTarget.classList.toggle('App-boardNotClicked');
+    event.currentTarget.classList.toggle('App-boardSymbolHeld');
+  }
 
     return (
         <div className="App">

@@ -1,24 +1,77 @@
-import { EmptyBoard, Pieces } from './constants';
-import { Rank, File, Team, PieceDescription } from './enum';
-import { Board, Piece, Square } from './types';
-
+enum Rank { one = 1, two = 2, three = 3, four = 4, five = 5, six = 6, seven = 7, eight = 8 }
+enum File {
+    a = 'a',
+    b = 'b',
+    c = 'c',
+    d = 'd',
+    e = 'e',
+    f = 'f',
+    g = 'g',
+    h = 'h'
+}
+enum Team { black = 'black', white = 'white' }
+enum PieceDescription {
+    rook = 'rook',
+    pawn = 'pawn',
+    knight = 'knight',
+    bishop = 'bishop',
+    king = 'king',
+    queen = 'queen'
+}
 const getNewBoard = () => {
-    const pieces =
+    const Pieces =
         [
-            ...Pieces
+            { color: Team.black, description: PieceDescription.rook, symbol: '♜', startRank: Rank.eight, startFile: File.a }, { color: Team.black, description: PieceDescription.knight, symbol: '♞', startRank: Rank.eight, startFile: File.b }, { color: Team.black, description: PieceDescription.bishop, symbol: '♝', startRank: Rank.eight, startFile: File.c }, { color: Team.black, description: PieceDescription.king, symbol: '♚', startRank: Rank.eight, startFile: File.d }, { color: Team.black, description: PieceDescription.queen, symbol: '♛', startRank: Rank.eight, startFile: File.e }, { color: Team.black, description: PieceDescription.bishop, symbol: '♝', startRank: Rank.eight, startFile: File.f }, { color: Team.black, description: PieceDescription.knight, symbol: '♞', startRank: Rank.eight, startFile: File.g }, { color: Team.black, description: PieceDescription.rook, symbol: '♜', startRank: Rank.eight, startFile: File.h },
+            { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.a }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.b }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.c }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.d }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.e }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.f }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.g }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.h },
+            { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.a }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.b }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.c }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.d }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.e }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.f }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.g }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.h },
+            { color: Team.white, description: PieceDescription.rook, symbol: '♖', startRank: Rank.one, startFile: File.a }, { color: Team.white, description: PieceDescription.knight, symbol: '♘', startRank: Rank.one, startFile: File.b }, { color: Team.white, description: PieceDescription.bishop, symbol: '♗', startRank: Rank.one, startFile: File.c }, { color: Team.white, description: PieceDescription.king, symbol: '♔', startRank: Rank.one, startFile: File.d }, { color: Team.white, description: PieceDescription.queen, symbol: '♕', startRank: Rank.one, startFile: File.e }, { color: Team.white, description: PieceDescription.bishop, symbol: '♗', startRank: Rank.one, startFile: File.f }, { color: Team.white, description: PieceDescription.knight, symbol: '♘', startRank: Rank.one, startFile: File.g }, { color: Team.white, description: PieceDescription.rook, symbol: '♖', startRank: Rank.one, startFile: File.h },
         ];
 
-    const initBoard = [
-        ...EmptyBoard
+    const initBoard: Board = [
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.eight, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.seven, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.seven, file: File.h },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.six, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.six, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.five, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.five, file: File.h },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.four, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.four, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.three, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.three, file: File.h },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.b },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.d },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.e }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.f },
+        { color: Team.black, piece: undefined, rank: Rank.two, file: File.g }, { color: Team.white, piece: undefined, rank: Rank.two, file: File.h },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.a }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.b },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.c }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.d },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.f },
+        { color: Team.white, piece: undefined, rank: Rank.one, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.h }
     ];
-    pieces.forEach(piece => {
-        const foundStartSquare = getPieceStartingSquare(piece, initBoard);
-        if (foundStartSquare) foundStartSquare.piece = piece;
+    Pieces.forEach(piece => {
+        let foundStartSquare = getPieceStartingSquare(piece, initBoard);
+        if (!!foundStartSquare) foundStartSquare.piece = piece;
     });
 
     return initBoard;
 };
-const numToFile = (x: number) => {
+type Piece = { color?: Team; description?: PieceDescription; symbol?: string; startRank: Rank; startFile: File; };
+export type Square = { color: Team, piece?: Piece, rank: Rank, file: File };
+type Board = Square[];
+const getFile = (x: number) => {
     switch (x) {
     case 0: { return File.a; }
     case 1: { return File.b; }
@@ -29,7 +82,6 @@ const numToFile = (x: number) => {
     case 6: { return File.g; }
     case 7: { return File.h; }
     }
-    throw new Error('could not match x to file string');
 };
 const fileToNum = (fileIndex: File) => {
     switch (fileIndex) {
@@ -44,8 +96,8 @@ const fileToNum = (fileIndex: File) => {
     }
 };
 const getFileDiff = (fromFile: File, toFile: File) => {
-    const fromNum = fileToNum(fromFile);
-    const toNum = fileToNum(toFile);
+    const fromNum = getX(fromFile);
+    const toNum = getX(toFile);
     /* #region console.debug */
     // console.debug(`squareToMoveFrom.file: ${squareToMoveFrom.file}`)
     // console.debug(`squareToMoveTo.file: ${squareToMoveTo.file}`)
@@ -55,26 +107,22 @@ const getFileDiff = (fromFile: File, toFile: File) => {
     return fromNum - toNum;
 };
 const getRankDiff = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
-    if (typeof squareToMoveFrom.piece === 'undefined') throw new Error('there must be a piece in the squareToMoveFrom');
-
+    if (!squareToMoveFrom.piece) throw new Error('there must be a piece in the squareToMoveFrom');
     return squareToMoveFrom.piece.color === Team.black
         ? squareToMoveFrom.rank - squareToMoveTo.rank
         : squareToMoveTo.rank - squareToMoveFrom.rank;
     // DO NOT DO THIS
-    // return Math.abs(squareToMoveTo.rank - squareToMoveFrom.rank)
     // we need negatives for pawns to be restricted to forward moves only
     // ...and some pieces can move backward so we need to know when that is the case
 };
 const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: Board) => {
-    if (typeof squareToMoveFrom.piece === 'undefined') throw new Error('squareToMoveFrom must have a piece in it');
-
-    /* #region console.debug */
+    if (!squareToMoveFrom.piece) throw new Error('squareToMoveFrom must have a piece in it')
+ /* #region console.debug */
     // console.log(`from ${squareToMoveFrom.file}${squareToMoveFrom.rank} to ${squareToMoveTo.file}${squareToMoveTo.rank}`)
     // Check for any pieces between start and end squares
 
-    /* #endregion */    
-    
-    if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
+ /* #endregion */    
+ if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
 
     const [startRank, startFileX] = [squareToMoveFrom.rank, fileToNum(squareToMoveFrom.file)];
     const [endRank, endFileX] = [squareToMoveTo.rank, fileToNum(squareToMoveTo.file)];
@@ -82,23 +130,22 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
     const deltaFile = Math.sign(endFileX - startFileX);
     let currentRank = startRank + deltaRank;
     let currentFileX = startFileX + deltaFile;
-
     /* #region console.debug */
     // console.debug(`currentRank: ${currentRank}`)
     // console.debug(`currentFileX: ${currentFileX}`)
     // console.debug(`deltaRank: ${deltaRank}`)
     // console.debug(`deltaFile: ${deltaFile}`)
     /* #endregion */
-
     while (currentRank !== endRank || currentFileX !== endFileX) {
         const currentFile = numToFile(currentFileX);
         /* #region console.debug */
         // console.debug(`currentFile: ${currentFile}`)
         // console.debug(`checking for blocked move at x,y - ${currentFileX},${currentRank}`)
         /* #endregion */
-        const currentSquare = getSquare(currentFile, currentRank, board);
-        if (typeof currentSquare !== 'undefined' && typeof currentSquare.piece !== 'undefined') {
-            console.log(`found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`);
+
+        let currentSquare = getSquare(currentFile, currentRank, board);
+        if (currentSquare && currentSquare.piece !== undefined) {
+            console.log(`found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`)
             return true;
         }
         currentRank += deltaRank;
@@ -107,26 +154,24 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
     return false;
 };
 const isMoveTeamTurn = (moveTeam: Team, currentTurnTeam: Team) => {
-    const currentTurnIsMoveTeam = moveTeam === currentTurnTeam;
-    if (!currentTurnIsMoveTeam) console.log(`It is not ${moveTeam}'s turn.`);
-    return currentTurnIsMoveTeam;
-};
+    let result = moveTeam === currentTurnTeam;
+    if (!result) console.log(`It is not ${moveTeam}'s turn.`);
+    return result;
+}
 const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
-    if (typeof squareToMoveFrom.piece === 'undefined')
-        throw new Error('there must be a piece in the squareToMoveFrom');
-
-    const pieceIsKing = squareToMoveFrom.piece.description === PieceDescription.king;
-    if (!pieceIsKing)
-        throw new Error('do not call isLegalKingMove for a piece that is not a pawn');
-
+    if (!squareToMoveFrom.piece) throw new Error('there must be a piece in the squareToMoveFrom');
+    if (squareToMoveFrom.piece.description !== PieceDescription.king) {
+        throw new Error('do not call isLegalKingMove for a piece that is not a pawn')
+    }
 
     const rankDiff = Math.abs(getRankDiff(squareToMoveFrom, squareToMoveTo));
     const fileDiff = Math.abs(getFileDiff(squareToMoveFrom.file, squareToMoveTo.file));
 
-    const moveIsOneSpace = (rankDiff === 1 && fileDiff === 0) || (rankDiff === 0 && fileDiff === 1);
-
-    if (!moveIsOneSpace) {
-        console.log('king can move only one space in any direction');
+    if (!(
+        (rankDiff === 1 && fileDiff === 0)
+        || (rankDiff === 0 && fileDiff === 1))
+    ) {
+        console.log('king can move only one space in any direction')
         return false;
     }
     // NEEDS KING-CANNOT-MOVE-INTO-CHECK
@@ -167,38 +212,33 @@ const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 /* #endregion */
 
 const isLegalBishopMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
-    if (typeof squareToMoveFrom.piece === 'undefined') throw Error('squareToMoveFrom must have a piece');
-
-    const pieceIsBishop = squareToMoveFrom.piece.description === PieceDescription.bishop;
-    if (!pieceIsBishop) {
-        throw new Error('do not call isLegalBishopMove for a piece that is not a pawn');
+    if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
+    if (squareToMoveFrom.piece.description !== PieceDescription.bishop) {
+        throw new Error('do not call isLegalBishopMove for a piece that is not a pawn')
     }
 
     const rankDiff = Math.abs(getRankDiff(squareToMoveFrom, squareToMoveTo));
     const fileDiff = Math.abs(getFileDiff(squareToMoveFrom.file, squareToMoveTo.file));
 
-    const isMoveDiagonal = rankDiff === fileDiff;
-    if (!isMoveDiagonal) {
-        console.log('bishop must move diagonally');
+    if (rankDiff !== fileDiff) {
+        console.log('bishop must move diagonally')
         return false;
     }
 };
 const isLegalKnightMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
-    if (typeof squareToMoveFrom.piece === 'undefined') throw Error('squareToMoveFrom must have a piece');
-    console.debug(`moving: ${squareToMoveFrom.piece?.description}`);
-    console.debug(`PieceDescription.knight: ${PieceDescription.knight}`);
-    const pieceToMoveIsKnight = squareToMoveFrom.piece.description === PieceDescription.knight;
-    if (!pieceToMoveIsKnight) {
-        throw new Error('do not call isLegalKnightMove for a piece that is not a knight');
+    if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
+    if (squareToMoveFrom.piece.description !== PieceDescription.knight) {
+        throw new Error('do not call isLegalKnightMove for a piece that is not a pawn')
     }
 
     const rankDiff = Math.abs(getRankDiff(squareToMoveFrom, squareToMoveTo));
     const fileDiff = Math.abs(getFileDiff(squareToMoveFrom.file, squareToMoveTo.file));
 
-    const moveIsLShape = (fileDiff === 1 && rankDiff === 2) || (fileDiff === 2 && rankDiff === 1);
-
-    if (!moveIsLShape) {
-        console.log('knight must move in L shape');
+    if (!(
+        (fileDiff === 1 && rankDiff === 2)
+        || (fileDiff === 2 && rankDiff === 1))
+    ) {
+        console.log('knight must move in L shape')
         return false;
     }
 
@@ -206,10 +246,8 @@ const isLegalKnightMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => 
 };
 const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
-
-    const pieceIsPawn = squareToMoveFrom.piece.description === PieceDescription.pawn;
-    if (!pieceIsPawn) {
-        throw new Error('do not call isLegalPawnMove for a piece that is not a pawn');
+    if (squareToMoveFrom.piece.description !== PieceDescription.pawn) {
+        throw new Error('do not call isLegalPawnMove for a piece that is not a pawn')
     }
 
     const rankDiff = getRankDiff(squareToMoveFrom, squareToMoveTo);
@@ -229,21 +267,16 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     // console.debug(`squareToMoveFrom.rank: ${squareToMoveFrom.rank}`)
     // console.debug(`squareToMoveFrom.piece.startRank: ${squareToMoveFrom.piece.startRank}`)
     /* #endregion */
-
-    const pieceIsMovingFromStartPosition = squareToMoveFrom.rank !== squareToMoveFrom.piece.startRank;
-    const moveIsTwoRanks = rankDiff === 2;
-
-    if (moveIsTwoRanks && pieceIsMovingFromStartPosition) {
-        console.log('pawn can only make 2-space-move from starting position');
-        return false;
+    if (rankDiff === 2 && squareToMoveFrom.rank !== squareToMoveFrom.piece.startRank) {
+        console.log('pawn can only make 2-space-move from starting position')
+        return false
     }
 
     const fileDiff = Math.abs(getFileDiff(squareToMoveFrom.file, squareToMoveTo.file));
 
     // console.log(`fileDiff: ${fileDiff}`)
-    const moveIsFileStatic = fileDiff === 0;
-    if (moveIsFileStatic && typeof squareToMoveTo.piece !== 'undefined') {
-        console.log('Pawn may only capture on the diagonal 1');
+    if (fileDiff === 0 && squareToMoveTo.piece) {
+        console.log('Pawn may only capture on the diagonal 1')
         /* #region console.debug */
         // console.debug(`squareToMoveTo: ${JSON.stringify(squareToMoveTo)}`)
         // console.debug(`squareToMoveFrom: ${JSON.stringify(squareToMoveFrom)}`)
@@ -253,10 +286,8 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     }
 
     // console.debug(`squareToMoveTo.piece: ${squareToMoveTo.piece}`)
-    const pawnMoveIsCaptureLike = fileDiff === 1;
-    const targetSquareIsOccupied = typeof squareToMoveTo.piece !== 'undefined';
-    if (pawnMoveIsCaptureLike && !targetSquareIsOccupied) {
-        console.log('Pawn may only capture on the diagonal 2');
+    if (fileDiff === 1 && !squareToMoveTo.piece) {
+        console.log('Pawn may only capture on the diagonal 2')
         /* #region console.debug */
         // console.debug(`squareToMoveTo: ${JSON.stringify(squareToMoveTo)}`)
         // console.debug(`squareToMoveFrom: ${JSON.stringify(squareToMoveFrom)}`)
@@ -290,17 +321,15 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
     const squareToMoveFrom = getSquare(fromFile, fromRank, board);
     if (!squareToMoveFrom) throw new Error('cannot determine squareToMoveFrom');
 
-    const pieceToMove = squareToMoveFrom.piece;
-    if (!pieceToMove) { console.log('no freedom NO PIECE'); return undefined; }
+    const pieceToMove = squareToMoveFrom.piece
+        ? squareToMoveFrom.piece
+        : undefined;
 
-    const moveTeam = pieceToMove.color;
-
-    const moveTeamIsColorful = !!moveTeam;
     // console.debug(pieceToMove);
     // NOT COVERED
-    if (!moveTeamIsColorful) { throw new Error('move piece has no color this shouldn\'t happen!'); }
+    if (!pieceToMove || !pieceToMove.color) { console.log('invalid piece'); return undefined; }
 
-    if (!isMoveTeamTurn(moveTeam, currentTeam)) return undefined;
+    if (!isMoveTeamTurn(pieceToMove.color, currentTeam)) return undefined;
 
     const squareToMoveTo = getSquare(toFile, toRank, board);
     if (!squareToMoveTo) throw new Error('cannot determine squareToMoveTo');

@@ -20,11 +20,9 @@ const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
 
         if (clickedSquare) {
 
-            if (firstClickedSquare) {
-                /* #region console.debug */
+            if (!!firstClickedSquare) {
                 // console.debug('second click')
                 // console.debug('firstClickedSquare:');
-                /* #endregion */
                 console.debug(JSON.stringify(firstClickedSquare));
 
                 setPieceClass(symbolNotClicked);
@@ -33,11 +31,9 @@ const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
                 firstClickedSquare = undefined;
                 return;
             }
-            /* #region console.debug */
             // console.debug('first click')
             // console.debug('currentSquare:');
             // console.debug(clickedSquare);
-            /* #endregion */
             firstClickedSquare = clickedSquare;
         }
     };
