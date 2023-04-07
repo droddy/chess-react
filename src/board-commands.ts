@@ -71,33 +71,34 @@ const getNewBoard = () => {
 type Piece = { color?: Team; description?: PieceDescription; symbol?: string; startRank: Rank; startFile: File; };
 export type Square = { color: Team, piece?: Piece, rank: Rank, file: File };
 type Board = Square[];
-const getFile = (x: number) => {
+const numToFile = (x: number) => {
     switch (x) {
-    case 0: { return File.a; }
-    case 1: { return File.b; }
-    case 2: { return File.c; }
-    case 3: { return File.d; }
-    case 4: { return File.e; }
-    case 5: { return File.f; }
-    case 6: { return File.g; }
-    case 7: { return File.h; }
+        case 0: { return File.a; }
+        case 1: { return File.b; }
+        case 2: { return File.c; }
+        case 3: { return File.d; }
+        case 4: { return File.e; }
+        case 5: { return File.f; }
+        case 6: { return File.g; }
+        case 7: { return File.h; }
     }
+    throw new Error('cannot match a number to a file')
 };
 const fileToNum = (fileIndex: File) => {
     switch (fileIndex) {
-    case File.a: { return 0; }
-    case File.b: { return 1; }
-    case File.c: { return 2; }
-    case File.d: { return 3; }
-    case File.e: { return 4; }
-    case File.f: { return 5; }
-    case File.g: { return 6; }
-    case File.h: { return 7; }
+        case File.a: { return 0; }
+        case File.b: { return 1; }
+        case File.c: { return 2; }
+        case File.d: { return 3; }
+        case File.e: { return 4; }
+        case File.f: { return 5; }
+        case File.g: { return 6; }
+        case File.h: { return 7; }
     }
 };
 const getFileDiff = (fromFile: File, toFile: File) => {
-    const fromNum = getX(fromFile);
-    const toNum = getX(toFile);
+    const fromNum = fileToNum(fromFile);
+    const toNum = fileToNum(toFile);
     /* #region console.debug */
     // console.debug(`squareToMoveFrom.file: ${squareToMoveFrom.file}`)
     // console.debug(`squareToMoveTo.file: ${squareToMoveTo.file}`)
@@ -117,12 +118,12 @@ const getRankDiff = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 };
 const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: Board) => {
     if (!squareToMoveFrom.piece) throw new Error('squareToMoveFrom must have a piece in it')
- /* #region console.debug */
+    /* #region console.debug */
     // console.log(`from ${squareToMoveFrom.file}${squareToMoveFrom.rank} to ${squareToMoveTo.file}${squareToMoveTo.rank}`)
     // Check for any pieces between start and end squares
 
- /* #endregion */    
- if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
+    /* #endregion */
+    if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
 
     const [startRank, startFileX] = [squareToMoveFrom.rank, fileToNum(squareToMoveFrom.file)];
     const [endRank, endFileX] = [squareToMoveTo.rank, fileToNum(squareToMoveTo.file)];
@@ -320,12 +321,13 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
 
     const squareToMoveFrom = getSquare(fromFile, fromRank, board);
     if (!squareToMoveFrom) throw new Error('cannot determine squareToMoveFrom');
+    if (!squareToMoveFrom.piece) return undefined;
 
     const pieceToMove = squareToMoveFrom.piece
         ? squareToMoveFrom.piece
         : undefined;
 
-    // console.debug(pieceToMove);
+    console.debug(pieceToMove);
     // NOT COVERED
     if (!pieceToMove || !pieceToMove.color) { console.log('invalid piece'); return undefined; }
 
@@ -352,9 +354,9 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
     // DON'T PUT THIS BEFORE THESE ^^^ OR ALL HELL BREAKS LOOSE
     if (isMoveBlocked(squareToMoveFrom, squareToMoveTo, board)) return undefined;
     // DON'T PUT ^^^ BEFORE THOSE ^^^ OR ALL HELL BREAKS LOOSE
-
+    console.debug(`pieceToMove: ${JSON.stringify(pieceToMove)}`);   
     squareToMoveTo.piece = pieceToMove;
-    squareToMoveFrom.piece.symbol = '';
+    squareToMoveFrom.piece = undefined;
     return board;
 };
 

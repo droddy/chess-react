@@ -54,7 +54,7 @@ function App() {
     if (!!newBoard) {
       setBoard(newBoard);
       setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
-    }
+    }   
     setMoveIndex(moveIndex + 1);
   }
 
@@ -80,6 +80,7 @@ function App() {
     }
     return rows;
   }
+
   const clickBoard = (event: React.MouseEvent<Element, MouseEvent>) => {
     event.currentTarget.classList.toggle('App-boardNotClicked');
     event.currentTarget.classList.toggle('App-boardSymbolHeld');
@@ -91,7 +92,7 @@ function App() {
                 {/* <img src={logo} className="App-logo" alt="logo" /> */}
                 <table className="dataintable" >
                     <tbody className='App-boardNotClicked' onClick={clickBoard}>
-                        {board ? printRows() : null}
+                        {board && printRows()}
                     </tbody>
                 </table>
                 <button onClick={resetBoard} >reset board</button>
