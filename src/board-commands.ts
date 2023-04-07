@@ -1,32 +1,13 @@
-enum Rank { one = 1, two = 2, three = 3, four = 4, five = 5, six = 6, seven = 7, eight = 8 }
-enum File {
-    a = 'a',
-    b = 'b',
-    c = 'c',
-    d = 'd',
-    e = 'e',
-    f = 'f',
-    g = 'g',
-    h = 'h'
-}
-enum Team { black = 'black', white = 'white' }
-enum PieceDescription {
-    rook = 'rook',
-    pawn = 'pawn',
-    knight = 'knight',
-    bishop = 'bishop',
-    king = 'king',
-    queen = 'queen'
-}
-const getNewBoard = () => {
-    const Pieces =
-        [
-            { color: Team.black, description: PieceDescription.rook, symbol: '♜', startRank: Rank.eight, startFile: File.a }, { color: Team.black, description: PieceDescription.knight, symbol: '♞', startRank: Rank.eight, startFile: File.b }, { color: Team.black, description: PieceDescription.bishop, symbol: '♝', startRank: Rank.eight, startFile: File.c }, { color: Team.black, description: PieceDescription.king, symbol: '♚', startRank: Rank.eight, startFile: File.d }, { color: Team.black, description: PieceDescription.queen, symbol: '♛', startRank: Rank.eight, startFile: File.e }, { color: Team.black, description: PieceDescription.bishop, symbol: '♝', startRank: Rank.eight, startFile: File.f }, { color: Team.black, description: PieceDescription.knight, symbol: '♞', startRank: Rank.eight, startFile: File.g }, { color: Team.black, description: PieceDescription.rook, symbol: '♜', startRank: Rank.eight, startFile: File.h },
-            { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.a }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.b }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.c }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.d }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.e }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.f }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.g }, { color: Team.black, description: PieceDescription.pawn, symbol: '♟︎', startRank: Rank.seven, startFile: File.h },
-            { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.a }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.b }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.c }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.d }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.e }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.f }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.g }, { color: Team.white, description: PieceDescription.pawn, symbol: '♙', startRank: Rank.two, startFile: File.h },
-            { color: Team.white, description: PieceDescription.rook, symbol: '♖', startRank: Rank.one, startFile: File.a }, { color: Team.white, description: PieceDescription.knight, symbol: '♘', startRank: Rank.one, startFile: File.b }, { color: Team.white, description: PieceDescription.bishop, symbol: '♗', startRank: Rank.one, startFile: File.c }, { color: Team.white, description: PieceDescription.king, symbol: '♔', startRank: Rank.one, startFile: File.d }, { color: Team.white, description: PieceDescription.queen, symbol: '♕', startRank: Rank.one, startFile: File.e }, { color: Team.white, description: PieceDescription.bishop, symbol: '♗', startRank: Rank.one, startFile: File.f }, { color: Team.white, description: PieceDescription.knight, symbol: '♘', startRank: Rank.one, startFile: File.g }, { color: Team.white, description: PieceDescription.rook, symbol: '♖', startRank: Rank.one, startFile: File.h },
-        ];
+import { File, PieceDescription, Rank, Team } from "./enum";
+import { Pieces } from "./constants";
 
+const getNewBoard = () => {
+    const pieces = [...Pieces];
+
+    // const autoInitBoard: Board = []
+    // for(let rank in Rank){
+
+    // };
     const initBoard: Board = [
         { color: Team.black, piece: undefined, rank: Rank.eight, file: File.a }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.b },
         { color: Team.black, piece: undefined, rank: Rank.eight, file: File.c }, { color: Team.white, piece: undefined, rank: Rank.eight, file: File.d },
@@ -61,7 +42,7 @@ const getNewBoard = () => {
         { color: Team.white, piece: undefined, rank: Rank.one, file: File.e }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.f },
         { color: Team.white, piece: undefined, rank: Rank.one, file: File.g }, { color: Team.black, piece: undefined, rank: Rank.one, file: File.h }
     ];
-    Pieces.forEach(piece => {
+    pieces.forEach(piece => {
         let foundStartSquare = getPieceStartingSquare(piece, initBoard);
         if (!!foundStartSquare) foundStartSquare.piece = piece;
     });
@@ -321,23 +302,22 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
 
     const squareToMoveFrom = getSquare(fromFile, fromRank, board);
     if (!squareToMoveFrom) throw new Error('cannot determine squareToMoveFrom');
+
     if (!squareToMoveFrom.piece) return undefined;
 
-    const pieceToMove = squareToMoveFrom.piece
-        ? squareToMoveFrom.piece
-        : undefined;
-
-    console.debug(pieceToMove);
+    const pieceToMove = squareToMoveFrom.piece;
+    // console.debug(pieceToMove);
     // NOT COVERED
-    if (!pieceToMove || !pieceToMove.color) { console.log('invalid piece'); return undefined; }
+    if (!pieceToMove.color) { 
+        console.log('invalid piece'); 
+        return undefined; }
 
     if (!isMoveTeamTurn(pieceToMove.color, currentTeam)) return undefined;
 
     const squareToMoveTo = getSquare(toFile, toRank, board);
     if (!squareToMoveTo) throw new Error('cannot determine squareToMoveTo');
 
-    const isCapturingSelf = pieceToMove && squareToMoveTo.piece
-        && pieceToMove.color === squareToMoveTo.piece.color;
+    const isCapturingSelf = pieceToMove.color === squareToMoveTo.piece?.color;
 
     if (isCapturingSelf) {
         console.log('No piece can capture a piece on the same team');
@@ -360,4 +340,4 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
     return board;
 };
 
-export { File, Rank, Team, getNewBoard, movePiece }; export type { Board };
+export { getNewBoard, movePiece }; 

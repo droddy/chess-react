@@ -1,8 +1,9 @@
 import { useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import { Team, getNewBoard, movePiece, File, Rank, Square } from './board-commands';
+import { Square, getNewBoard, movePiece,  } from './board-commands';
 import BoardRow from './components/board-row';
+import { Team } from './enum';
 
 function App() {
     const [currentTeam, setCurrentTeam] = useState(Team.white);

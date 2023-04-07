@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Team } from '../board-commands';
+import { Team } from '../enum';
 import { Square } from '../types';
 
 type squareProps = { square: Square, moveHandler: (fromSquare: Square, toSquare: Square) => void }
