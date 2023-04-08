@@ -71,31 +71,17 @@ const getNewBoard = () => {
 /* #endregion */
 
 const numToFile = (x: number) => {
-    // const charCode = x+97;
-    // if (charCode < 97 || charCode > 104)
-    //     throw new Error('numToFile: file indexing is out of whack')
-
-
-    // return String.fromCharCode(charCode);
-    switch (x) {
-        case 0: { return File.a; }
-        case 1: { return File.b; }
-        case 2: { return File.c; }
-        case 3: { return File.d; }
-        case 4: { return File.e; }
-        case 5: { return File.f; }
-        case 6: { return File.g; }
-        case 7: { return File.h; }
-    }
-    throw new Error('cannot match a number to a file')
+    const charCode = x + 97
+    if (charCode < 97 || charCode > 104) throw new Error('numToFile: file indxing is out of whack')
+    return String.fromCharCode(charCode);
 };
-const fileToNum = (file: File) => {
+const fileToNum = (file: string) => {
     const num = (file.charCodeAt(0) - 97);
     if (num < 0 || num > 7) throw new Error('fileToNum: file indexing is out of whack')
     return (num);
 };
 
-const getFileDiff = (fromFile: File, toFile: File) => {
+const getFileDiff = (fromFile: string, toFile: string) => {
     const fromNum = fileToNum(fromFile);
     const toNum = fileToNum(toFile);
     /* #region console.debug */
@@ -123,14 +109,15 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
     // Check for any pieces between start and end squares
 
     /* #endregion */
+
     if (squareToMoveFrom.piece.description === PieceDescription.knight) return false;
 
     const [startRank, startFileX] = [squareToMoveFrom.rank, fileToNum(squareToMoveFrom.file)];
     const [endRank, endFileX] = [squareToMoveTo.rank, fileToNum(squareToMoveTo.file)];
-    const deltaRank = Math.sign(endRank - startRank);
-    const deltaFile = Math.sign(endFileX - startFileX);
-    let currentRank = startRank + deltaRank;
-    let currentFileX = startFileX + deltaFile;
+    const rankDelta = Math.sign(endRank - startRank);
+    const fileDelta = Math.sign(endFileX - startFileX);
+    let currentRank = startRank + rankDelta;
+    let currentFileX = startFileX + fileDelta;
     /* #region console.debug */
     // console.debug(`currentRank: ${currentRank}`)
     // console.debug(`currentFileX: ${currentFileX}`)
@@ -145,12 +132,12 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
         /* #endregion */
 
         let currentSquare = getSquare(currentFile, currentRank, board);
-        if (currentSquare && currentSquare.piece !== undefined) {
+        if (!!currentSquare && currentSquare.piece !== undefined) {
             console.log(`${loggingPrefix}${functionPrefix}found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`)
             return true;
         }
-        currentRank += deltaRank;
-        currentFileX += deltaFile;
+        currentRank += rankDelta;
+        currentFileX += fileDelta;
     }
     return false;
 };
@@ -310,7 +297,7 @@ const getPieceStartingSquare = (piece: Piece, board: Board) => {
     return board.find(square => square.rank === piece.startRank
         && square.file === piece.startFile);
 };
-const getSquare = (file: File, rank: Rank, board: Board): Square | undefined => {
+const getSquare = (file: string, rank: Rank, board: Board): Square | undefined => {
     return board.find(square => square.file === file
         && square.rank === rank);
 };
