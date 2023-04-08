@@ -12,7 +12,6 @@ let functionPrefix = ' -- ';
 function App() {
     const [currentTeam, setCurrentTeam] = useState(Team.white);
     const [board, setBoard] = useState(getNewBoard());
-    const [moveIndex, setMoveIndex] = useState(0);
 
     /* #region test moves */
     // let testMoves: any[][] = [];
@@ -54,15 +53,14 @@ function App() {
     /* #endregion */
 
   const move = (fromSquare: Square, toSquare: Square) => {
-    
     functionPrefix = 'move -- '
     console.log(`${loggingPrefix}${functionPrefix}current team is : ${currentTeam}`);
-    const newBoard = movePiece(fromSquare.file, fromSquare.rank, toSquare.file, toSquare.rank, board, currentTeam);
+
+    const newBoard = movePiece(fromSquare, toSquare, board, currentTeam);
     if (!!newBoard) {
       setBoard(newBoard);
       setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
     }   
-    setMoveIndex(moveIndex + 1);
   }
 
 
@@ -70,7 +68,6 @@ function App() {
         console.clear();
         setBoard(getNewBoard());
         setCurrentTeam(Team.white);
-        setMoveIndex(0);
     };
 
   const printRows = () => {
