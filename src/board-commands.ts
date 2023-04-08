@@ -1,7 +1,8 @@
 import { File, PieceDescription, Rank, Team } from "./enum";
 import { Pieces } from "./constants";
 import { Board, Square, Piece } from "./types";
-
+const loggingPrefix = 'board-commands -- ';
+let functionPrefix = ' -- ';
 const getNewBoard = () => {
     const pieces = [...Pieces];
 
@@ -85,7 +86,7 @@ const numToFile = (x: number) => {
 const fileToNum = (file: File) => {
     const num = (file.charCodeAt(0) - 97);
     if (num < 0 || num > 7) throw new Error('fileToNum: file indexing is out of whack')
-    return (file.charCodeAt(0) - 97);
+    return (num);
 };
 
 const getFileDiff = (fromFile: File, toFile: File) => {
@@ -109,6 +110,7 @@ const getRankDiff = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     // ...and some pieces can move backward so we need to know when that is the case
 };
 const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: Board) => {
+    functionPrefix = `isMoveBlocked -- `;
     if (!squareToMoveFrom.piece) throw new Error('squareToMoveFrom must have a piece in it')
     /* #region console.debug */
     // console.log(`from ${squareToMoveFrom.file}${squareToMoveFrom.rank} to ${squareToMoveTo.file}${squareToMoveTo.rank}`)
@@ -138,7 +140,7 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
 
         let currentSquare = getSquare(currentFile, currentRank, board);
         if (currentSquare && currentSquare.piece !== undefined) {
-            console.log(`found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`)
+            console.log(`${loggingPrefix}${functionPrefix}found piece blocking at ${currentSquare.file}${currentSquare.rank}, ${currentSquare.piece}`)
             return true;
         }
         currentRank += deltaRank;
@@ -147,11 +149,13 @@ const isMoveBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: 
     return false;
 };
 const isMoveTeamTurn = (moveTeam: Team, currentTurnTeam: Team) => {
+    functionPrefix = `isMoveTeamTurn -- `;
     let result = moveTeam === currentTurnTeam;
-    if (!result) console.log(`It is not ${moveTeam}'s turn.`);
+    if (!result) console.log(`${loggingPrefix}${functionPrefix}It is not ${moveTeam}'s turn.`);
     return result;
 }
 const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
+    functionPrefix = `isLegalKingMove -- `;
     if (!squareToMoveFrom.piece) throw new Error('there must be a piece in the squareToMoveFrom');
     if (squareToMoveFrom.piece.description !== PieceDescription.king) {
         throw new Error('do not call isLegalKingMove for a piece that is not a pawn')
@@ -164,7 +168,7 @@ const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
         (rankDiff === 1 && fileDiff === 0)
         || (rankDiff === 0 && fileDiff === 1))
     ) {
-        console.log('king can move only one space in any direction')
+        console.log(`${loggingPrefix}${functionPrefix}king can move only one space in any direction`)
         return false;
     }
     // NEEDS KING-CANNOT-MOVE-INTO-CHECK
@@ -205,6 +209,7 @@ const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 /* #endregion */
 
 const isLegalBishopMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
+    functionPrefix = `isLegalBishopMove -- `;
     if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
     if (squareToMoveFrom.piece.description !== PieceDescription.bishop) {
         throw new Error('do not call isLegalBishopMove for a piece that is not a pawn')
@@ -213,12 +218,15 @@ const isLegalBishopMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => 
     const rankDiff = Math.abs(getRankDiff(squareToMoveFrom, squareToMoveTo));
     const fileDiff = Math.abs(getFileDiff(squareToMoveFrom.file, squareToMoveTo.file));
 
+    console.debug(`${loggingPrefix}${functionPrefix}rankDiff: ${rankDiff}, fileDiff: ${fileDiff}`);
     if (rankDiff !== fileDiff) {
-        console.log('bishop must move diagonally')
+        console.log(`${loggingPrefix}${functionPrefix}bishop must move diagonally`)
         return false;
     }
+    return true;
 };
 const isLegalKnightMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
+    functionPrefix = `isLegalKnightMove -- `;
     if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
     if (squareToMoveFrom.piece.description !== PieceDescription.knight) {
         throw new Error('do not call isLegalKnightMove for a piece that is not a pawn')
@@ -231,13 +239,14 @@ const isLegalKnightMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => 
         (fileDiff === 1 && rankDiff === 2)
         || (fileDiff === 2 && rankDiff === 1))
     ) {
-        console.log('knight must move in L shape')
+        console.log(`${loggingPrefix}${functionPrefix}knight must move in L shape`)
         return false;
     }
 
     return true;
 };
 const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
+    functionPrefix = `isLegalPawnMove -- `;
     if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
     if (squareToMoveFrom.piece.description !== PieceDescription.pawn) {
         throw new Error('do not call isLegalPawnMove for a piece that is not a pawn')
@@ -246,12 +255,12 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     const rankDiff = getRankDiff(squareToMoveFrom, squareToMoveTo);
 
     if (rankDiff <= 0) {
-        console.log('Pawn must move forward.');
+        console.log(`${loggingPrefix}${functionPrefix}Pawn must move forward.`);
         return false;
     }
 
     if (rankDiff > 2) {
-        console.log('pawn cannot move more than 2 spaces');
+        console.log(`${loggingPrefix}${functionPrefix}pawn cannot move more than 2 spaces`);
         return false;
     }
 
@@ -261,15 +270,15 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     // console.debug(`squareToMoveFrom.piece.startRank: ${squareToMoveFrom.piece.startRank}`)
     /* #endregion */
     if (rankDiff === 2 && squareToMoveFrom.rank !== squareToMoveFrom.piece.startRank) {
-        console.log('pawn can only make 2-space-move from starting position')
+        console.log(`${loggingPrefix}${functionPrefix}pawn can only make 2-space-move from starting position`)
         return false
     }
 
     const fileDiff = Math.abs(getFileDiff(squareToMoveFrom.file, squareToMoveTo.file));
 
-    // console.log(`fileDiff: ${fileDiff}`)
+    // console.log(`${loggingPrefix}${functionPrefix}fileDiff: ${fileDiff}`)
     if (fileDiff === 0 && squareToMoveTo.piece) {
-        console.log('Pawn may only capture on the diagonal 1')
+        console.log(`${loggingPrefix}${functionPrefix}Pawn may only capture on the diagonal 1`)
         /* #region console.debug */
         // console.debug(`squareToMoveTo: ${JSON.stringify(squareToMoveTo)}`)
         // console.debug(`squareToMoveFrom: ${JSON.stringify(squareToMoveFrom)}`)
@@ -280,7 +289,7 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 
     // console.debug(`squareToMoveTo.piece: ${squareToMoveTo.piece}`)
     if (fileDiff === 1 && !squareToMoveTo.piece) {
-        console.log('Pawn may only capture on the diagonal 2')
+        console.log(`${loggingPrefix}${functionPrefix}Pawn may only capture on the diagonal 2`)
         /* #region console.debug */
         // console.debug(`squareToMoveTo: ${JSON.stringify(squareToMoveTo)}`)
         // console.debug(`squareToMoveFrom: ${JSON.stringify(squareToMoveFrom)}`)
@@ -309,7 +318,8 @@ const getSquare = (file: File, rank: Rank, board: Board): Square | undefined => 
 // }
 
 const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, board: Board, currentTeam: Team): Board | undefined => {
-    console.log(`board-commands -- request to move ${fromFile}${fromRank} to ${toFile}${toRank}`);
+    functionPrefix = `movePiece -- `;
+    console.log(`${loggingPrefix}${functionPrefix}request to move ${fromFile}${fromRank} to ${toFile}${toRank}`);
 
     const squareToMoveFrom = getSquare(fromFile, fromRank, board);
     if (!squareToMoveFrom) throw new Error('cannot determine squareToMoveFrom');
@@ -320,7 +330,7 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
     // console.debug(pieceToMove);
     // NOT COVERED
     if (!pieceToMove.color) {
-        console.log('invalid piece');
+        console.log(`${loggingPrefix}${functionPrefix}invalid piece`);
         return undefined;
     }
 
@@ -332,7 +342,7 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
     const isCapturingSelf = pieceToMove.color === squareToMoveTo.piece?.color;
 
     if (isCapturingSelf) {
-        console.log('No piece can capture a piece on the same team');
+        console.log(`${loggingPrefix}${functionPrefix}No piece can capture a piece on the same team`);
         return undefined;
     }
 
@@ -346,7 +356,8 @@ const movePiece = (fromFile: File, fromRank: Rank, toFile: File, toRank: Rank, b
     // DON'T PUT THIS BEFORE THESE ^^^ OR ALL HELL BREAKS LOOSE
     if (isMoveBlocked(squareToMoveFrom, squareToMoveTo, board)) return undefined;
     // DON'T PUT ^^^ BEFORE THOSE ^^^ OR ALL HELL BREAKS LOOSE
-    console.debug(`pieceToMove: ${JSON.stringify(pieceToMove)}`);
+    // console.debug(`pieceToMove: ${JSON.stringify(pieceToMove)}`);
+    
     squareToMoveTo.piece = pieceToMove;
     squareToMoveFrom.piece = undefined;
     return board;

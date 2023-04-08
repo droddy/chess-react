@@ -2,11 +2,15 @@ import { FC, useEffect, useState } from 'react';
 import { Team } from '../enum';
 import { Square } from '../types';
 
+const loggingPrefix = 'board-commands -- ';
+let functionPrefix = ' -- ';
+
 type squareProps = { square: Square, moveHandler: (fromSquare: Square, toSquare: Square) => void }
 
 let firstClickedSquare: string | undefined = undefined;
 
 const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
+    functionPrefix = 'BoardSquare -- '
     const symbol = square.piece?.symbol || '';
     const symbolNotClicked = 'App-symbolNotClicked';
     const symbolHeld = 'App-symbolHeld';
@@ -15,19 +19,20 @@ const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
     const clickSquare = (event: React.MouseEvent<Element, MouseEvent>) => {
 
         const clickedSquare = event.currentTarget.getAttribute('data-square');
-        console.debug('clickedSquare:');
-        console.debug(JSON.stringify(clickedSquare));
+        functionPrefix += 'clickSquare -- '
+        // console.debug('clickedSquare:');
+        // console.debug(JSON.stringify(clickedSquare));
 
         if (clickedSquare) {
 
             if (!!firstClickedSquare) {
                 // console.debug('second click')
                 // console.debug('firstClickedSquare:');
-                console.debug(JSON.stringify(firstClickedSquare));
+                // console.debug(JSON.stringify(firstClickedSquare));
 
                 setPieceClass(symbolNotClicked);
                 moveHandler(JSON.parse(firstClickedSquare), JSON.parse(clickedSquare));
-                console.debug('resetting clickCount');
+                console.log(`${loggingPrefix}${functionPrefix}board-row -- resetting clickCount`);
                 firstClickedSquare = undefined;
                 return;
             }

@@ -6,6 +6,9 @@ import { Team } from './enum';
 import { getNewBoard, movePiece } from './board-commands';
 import { Square } from './types';
 
+const loggingPrefix = 'App -- ';
+let functionPrefix = ' -- ';
+
 function App() {
     const [currentTeam, setCurrentTeam] = useState(Team.white);
     const [board, setBoard] = useState(getNewBoard());
@@ -51,7 +54,9 @@ function App() {
     /* #endregion */
 
   const move = (fromSquare: Square, toSquare: Square) => {
-    console.debug(`current team is : ${currentTeam}`);
+    
+    functionPrefix = 'move -- '
+    console.log(`${loggingPrefix}${functionPrefix}current team is : ${currentTeam}`);
     const newBoard = movePiece(fromSquare.file, fromSquare.rank, toSquare.file, toSquare.rank, board, currentTeam);
     if (!!newBoard) {
       setBoard(newBoard);
