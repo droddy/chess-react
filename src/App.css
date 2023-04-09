@@ -107,7 +107,7 @@
 .App-boardNotClicked {
   cursor: grab;
 }
-.App-symbolNotClicked {
+.App-symbolNotHeld {
   animation: none;
 }
 .App-symbolHeld {

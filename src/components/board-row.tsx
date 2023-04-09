@@ -1,81 +1,80 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Team } from '../enum';
-import { Square } from '../types';
+import { Piece, Square } from '../types';
 
 const loggingPrefix = 'board-commands -- ';
 let functionPrefix = ' -- ';
+let firstClickedSquare: Square | undefined = undefined;
 
-type squareProps = { square: Square, moveHandler: (fromSquare: Square, toSquare: Square) => void }
+type pieceProps = {
+    className: string,
+    symbol: string
+};
 
-let firstClickedSquare: string | undefined = undefined;
+const BoardPiece: FC<pieceProps> = ({ className, symbol }) => {
+    return (<>
+        <span
+            className={`App-symbol ${className}`}>{symbol}</span>
+    </>)
+}
 
-const BoardSquare: FC<squareProps> = ({ square, moveHandler }) => {
+type squareProps = {
+    square: Square,
+    holdPiece: (piece: Piece) => void,
+    heldPiece: Piece | undefined,
+    movePiece: (fromSquare: Square, toSquare: Square) => void
+};
+
+const BoardSquare: FC<squareProps> = ({ square, holdPiece, heldPiece, movePiece }) => {
     functionPrefix = 'BoardSquare -- '
     const symbol = square.piece?.symbol || '';
-    const symbolNotClicked = 'App-symbolNotClicked';
+    const symbolNotHeld = 'App-symbolNotHeld';
     const symbolHeld = 'App-symbolHeld';
-    const [pieceClass, setPieceClass] = useState(symbolNotClicked);
+    const startFilesMatch = heldPiece?.startFile === square.piece?.startFile;
+    const startRanksMatch = heldPiece?.startRank === square.piece?.startRank;
 
-    const clickSquare = (event: React.MouseEvent<Element, MouseEvent>) => {
-
-        const clickedSquare = event.currentTarget.getAttribute('data-square');
+    let iHaveHeldPiece = startFilesMatch && startRanksMatch;
+    const clickSquare = () => {
         functionPrefix += 'clickSquare -- '
-        // console.debug('clickedSquare:');
-        // console.debug(JSON.stringify(clickedSquare));
 
-        if (clickedSquare) {
+        if (!!firstClickedSquare) {
+            movePiece(firstClickedSquare, square);
 
-            if (!!firstClickedSquare) {
-                // console.debug('second click')
-                // console.debug('firstClickedSquare:');
-                // console.debug(JSON.stringify(firstClickedSquare));
+            console.debug(`${loggingPrefix}${functionPrefix}un-setting first clicked square`);
+            firstClickedSquare = undefined;
+        } else {
+            if (!!square.piece) holdPiece(square.piece)
 
-                setPieceClass(symbolNotClicked);
-                moveHandler(JSON.parse(firstClickedSquare), JSON.parse(clickedSquare));
-                console.log(`${loggingPrefix}${functionPrefix}board-row -- resetting clickCount`);
-                firstClickedSquare = undefined;
-                return;
-            }
-            // console.debug('first click')
-            // console.debug('currentSquare:');
-            // console.debug(clickedSquare);
-            firstClickedSquare = clickedSquare;
+            console.debug(`${loggingPrefix}${functionPrefix}setting first clicked square`);
+            firstClickedSquare = square;
         }
     };
-    const clickPiece = (event: React.MouseEvent<Element, MouseEvent>) => {
-        // event.currentTarget.classList.toggle(symbolNotClicked);
-        // event.currentTarget.classList.toggle(symbolHeld);
-        setPieceClass((current) => {
-            if (current === symbolNotClicked) return symbolHeld;
-            return symbolNotClicked;
-        });
-    };
-
-    useEffect(() => {
-        setPieceClass(symbolNotClicked);
-    }, [square]);
-
     return (
         <>
             <td
                 className={
-                    (square.color === Team.black
+                    square.color === Team.black
                         ? ' App-board-cell-black'
-                        : ' App-board-cell') + ` ${symbolNotClicked}`}
+                        : ' App-board-cell'}
                 onClick={clickSquare}
                 data-square={JSON.stringify(square)}
             >
-                <span
-                    onClick={clickPiece}
-                    className={`App-symbol ${pieceClass}`}>{symbol}</span>
+                <BoardPiece
+                    className={iHaveHeldPiece ? symbolHeld : symbolNotHeld}
+                    symbol={symbol} />
             </td>
         </>
     );
 };
 
-type rowProps = { row: Square[], rowIndex: number, moveHandler: (fromSquare: Square, toSquare: Square) => void }
-
-const BoardRow: FC<rowProps> = ({ row, rowIndex, moveHandler }) => {
+type rowProps = { 
+    row: Square[], 
+    rowIndex: number, 
+    holdPiece: (piece: Piece) => void, 
+    heldPiece: Piece | undefined, 
+    movePiece: (fromSquare: Square, toSquare: Square) => void };
+    
+const BoardRow: FC<rowProps> = ({ row, rowIndex, holdPiece, heldPiece, movePiece }) => {
     return (
         <>
             <tr>
@@ -84,7 +83,10 @@ const BoardRow: FC<rowProps> = ({ row, rowIndex, moveHandler }) => {
                         <BoardSquare
                             square={square}
                             key={`row-${rowIndex}-column-${columnIndex}`}
-                            moveHandler={moveHandler} />
+                            movePiece={movePiece}
+                            holdPiece={holdPiece}
+                            heldPiece={heldPiece}
+                        />
                     )}
             </tr>
         </>

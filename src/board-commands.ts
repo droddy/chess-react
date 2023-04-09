@@ -4,14 +4,11 @@ import { Board, Square, Piece } from "./types";
 const loggingPrefix = 'board-commands -- ';
 let functionPrefix = ' -- ';
 
-const placePiecesOnNewBoard = (board: Board) => {
-    const pieces = [...Pieces];
-    pieces.forEach(piece => {
-        let foundStartSquare = getPieceStartingSquare(piece, board);
-        if (!!foundStartSquare)
-            foundStartSquare.piece = piece;
-    });
-}
+const GetNewBoard = () => {
+    const board: Board = getEmptyBoard();
+    placePiecesOnNewBoard(board);
+    return board;
+};
 const getEmptyBoard = () => {
     const initialBoard: Board = [];
 
@@ -27,11 +24,63 @@ const getEmptyBoard = () => {
     };
     return initialBoard;
 }
-const getNewBoard = () => {
-    const board: Board = getEmptyBoard();
-    placePiecesOnNewBoard(board);
+const MovePiece = (fromSquare: Square, toSquare: Square, board: Board, currentTeam: Team): Board | undefined => {
+    const fromFile = fromSquare.file;
+    const fromRank = fromSquare.rank;
+    const toFile = toSquare.file;
+    const toRank = toSquare.rank;
+    functionPrefix = `movePiece -- `;
+    console.log(`${loggingPrefix}${functionPrefix}request to move ${fromFile}${fromRank} to ${toFile}${toRank}`);
+
+    const squareToMoveFrom = getSquare(fromFile, fromRank, board);
+    if (!squareToMoveFrom) throw new Error('cannot determine squareToMoveFrom');
+
+    if (!squareToMoveFrom.piece) return undefined;
+
+    const pieceToMove = squareToMoveFrom.piece;
+    // console.debug(pieceToMove);
+    // NOT COVERED
+    if (!pieceToMove.color) {
+        console.log(`${loggingPrefix}${functionPrefix}invalid piece`);
+        return undefined;
+    }
+
+    if (!isMoveTeamTurn(pieceToMove.color, currentTeam)) return undefined;
+
+    const squareToMoveTo = getSquare(toFile, toRank, board);
+    if (!squareToMoveTo) throw new Error('cannot determine squareToMoveTo');
+
+    const isCapturingSelf = pieceToMove.color === squareToMoveTo.piece?.color;
+
+    if (isCapturingSelf) {
+        console.log(`${loggingPrefix}${functionPrefix}No piece can capture a piece on the same team`);
+        return undefined;
+    }
+
+    if (pieceToMove.description === PieceDescription.pawn && !isLegalPawnMove(squareToMoveFrom, squareToMoveTo)) return undefined;
+    if (pieceToMove.description === PieceDescription.knight && !isLegalKnightMove(squareToMoveFrom, squareToMoveTo)) return undefined;
+    if (pieceToMove.description === PieceDescription.bishop && !isLegalBishopMove(squareToMoveFrom, squareToMoveTo)) return undefined;
+    if (pieceToMove.description === PieceDescription.king && !isLegalKingMove(squareToMoveFrom, squareToMoveTo)) return undefined;
+
+    // NEEDS TEAM CANNOT PUT OWN KING INTO CHECK
+
+    // DON'T PUT THIS BEFORE THESE ^^^ OR ALL HELL BREAKS LOOSE
+    if (moveIsBlocked(squareToMoveFrom, squareToMoveTo, board)) return undefined;
+    // DON'T PUT ^^^ BEFORE THOSE ^^^ OR ALL HELL BREAKS LOOSE
+    // console.debug(`pieceToMove: ${JSON.stringify(pieceToMove)}`);
+
+    squareToMoveTo.piece = pieceToMove;
+    squareToMoveFrom.piece = undefined;
     return board;
 };
+const placePiecesOnNewBoard = (board: Board) => {
+    const pieces = [...Pieces];
+    pieces.forEach(piece => {
+        let foundStartSquare = getPieceStartingSquare(piece, board);
+        if (!!foundStartSquare)
+            foundStartSquare.piece = piece;
+    });
+}
 const numToFile = (x: number) => {
     const charCode = x + 97
     if (charCode < 97 || charCode > 104) throw new Error('numToFile: file indxing is out of whack')
@@ -55,6 +104,16 @@ const getRankDiff = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     // DO NOT DO THIS
     // we need negatives for pawns to be restricted to forward moves only
     // ...and some pieces can move backward so we need to know when that is the case
+};
+const getPieceStartingSquare = (piece: Piece, board: Board) => {
+    return board.find(square =>
+        square.rank === piece.startRank
+        && square.file === piece.startFile);
+};
+const getSquare = (file: string, rank: Rank, board: Board): Square | undefined => {
+    return board.find(square =>
+        square.file === file
+        && square.rank === rank);
 };
 const moveIsBlocked = (squareToMoveFrom: Square, squareToMoveTo: Square, board: Board) => {
     functionPrefix = `isMoveBlocked -- `;
@@ -94,7 +153,6 @@ const kingmoveIsOneSpaceOnly = (rankDiff: number, fileDiff: number) => {
     const kingMoveIsOneSpaceOnly = kingMoveIsSolely1Rank || kingMoveIsSolelyFile;
     return kingMoveIsOneSpaceOnly;
 }
-
 const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     functionPrefix = `isLegalKingMove -- `;
     if (!squareToMoveFrom.piece) throw new Error('there must be a piece in the squareToMoveFrom');
@@ -116,39 +174,6 @@ const isLegalKingMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
 
     return true;
 };
-
-/* #region isKingMoveTargetUnderAttack */
-// const isKingMoveTargetUnderAttack = (targetSquare: { file: any; rank: number; }, kingColor: any) => {
-//     // if (!square.piece) throw Error('no piece to test if attacked')
-//     // if (square.piece.description !== king) throw Error('do not call isKingTargetUnderAttack for a square that does not have a king')
-
-//     // Check for attacks along ranks, files, and diagonals
-//     const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
-//     for (let i = 0; i < directions.length; i++) {
-//         let file = getX(targetSquare.file) + directions[i][0];
-//         let rank = targetSquare.rank + directions[i][1];
-//         let currentSquare = getSquare(getFile(file), rank);
-//         if(!currentSquare) throw new Error('error getting current square');
-
-//         while (file >= 1 && file < 9 && rank >= 1 && rank < 9) {
-//             const testPiece = currentSquare.piece;
-//             if (testPiece) {
-//                 if (
-//                     testPiece.color !== kingColor && 
-//                     ((testPiece.description === 'rook' && (i < 4)) || 
-//                     (testPiece.description === 'bishop' && (i >= 4)) ||
-//                     testPiece.description === queen)) {
-//                     return true;
-//                 }
-//                 break;
-//             }
-//             file += directions[i][0];
-//             rank += directions[i][1];
-//         }
-//     }
-// }
-/* #endregion */
-
 const isLegalBishopMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     functionPrefix = `isLegalBishopMove -- `;
     if (!squareToMoveFrom.piece) throw Error('squareToMoveFrom must have a piece');
@@ -229,65 +254,38 @@ const isLegalPawnMove = (squareToMoveFrom: Square, squareToMoveTo: Square) => {
     // TODO -- EN PASSENT
     return true;
 };
-const getPieceStartingSquare = (piece: Piece, board: Board) => {
-    return board.find(square =>
-        square.rank === piece.startRank
-        && square.file === piece.startFile);
-};
-const getSquare = (file: string, rank: Rank, board: Board): Square | undefined => {
-    return board.find(square =>
-        square.file === file
-        && square.rank === rank);
-};
 
-const movePiece = (fromSquare: Square, toSquare: Square, board: Board, currentTeam: Team): Board | undefined => {
-    const fromFile = fromSquare.file;
-    const fromRank = fromSquare.rank;
-    const toFile = toSquare.file;
-    const toRank = toSquare.rank;
-    functionPrefix = `movePiece -- `;
-    console.log(`${loggingPrefix}${functionPrefix}request to move ${fromFile}${fromRank} to ${toFile}${toRank}`);
+export { GetNewBoard, MovePiece };
 
-    const squareToMoveFrom = getSquare(fromFile, fromRank, board);
-    if (!squareToMoveFrom) throw new Error('cannot determine squareToMoveFrom');
 
-    if (!squareToMoveFrom.piece) return undefined;
+/* #region isKingMoveTargetUnderAttack */
+// const isKingMoveTargetUnderAttack = (targetSquare: { file: any; rank: number; }, kingColor: any) => {
+//     // if (!square.piece) throw Error('no piece to test if attacked')
+//     // if (square.piece.description !== king) throw Error('do not call isKingTargetUnderAttack for a square that does not have a king')
 
-    const pieceToMove = squareToMoveFrom.piece;
-    // console.debug(pieceToMove);
-    // NOT COVERED
-    if (!pieceToMove.color) {
-        console.log(`${loggingPrefix}${functionPrefix}invalid piece`);
-        return undefined;
-    }
+//     // Check for attacks along ranks, files, and diagonals
+//     const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+//     for (let i = 0; i < directions.length; i++) {
+//         let file = getX(targetSquare.file) + directions[i][0];
+//         let rank = targetSquare.rank + directions[i][1];
+//         let currentSquare = getSquare(getFile(file), rank);
+//         if(!currentSquare) throw new Error('error getting current square');
 
-    if (!isMoveTeamTurn(pieceToMove.color, currentTeam)) return undefined;
-
-    const squareToMoveTo = getSquare(toFile, toRank, board);
-    if (!squareToMoveTo) throw new Error('cannot determine squareToMoveTo');
-
-    const isCapturingSelf = pieceToMove.color === squareToMoveTo.piece?.color;
-
-    if (isCapturingSelf) {
-        console.log(`${loggingPrefix}${functionPrefix}No piece can capture a piece on the same team`);
-        return undefined;
-    }
-
-    if (pieceToMove.description === PieceDescription.pawn && !isLegalPawnMove(squareToMoveFrom, squareToMoveTo)) return undefined;
-    if (pieceToMove.description === PieceDescription.knight && !isLegalKnightMove(squareToMoveFrom, squareToMoveTo)) return undefined;
-    if (pieceToMove.description === PieceDescription.bishop && !isLegalBishopMove(squareToMoveFrom, squareToMoveTo)) return undefined;
-    if (pieceToMove.description === PieceDescription.king && !isLegalKingMove(squareToMoveFrom, squareToMoveTo)) return undefined;
-
-    // NEEDS TEAM CANNOT PUT OWN KING INTO CHECK
-
-    // DON'T PUT THIS BEFORE THESE ^^^ OR ALL HELL BREAKS LOOSE
-    if (moveIsBlocked(squareToMoveFrom, squareToMoveTo, board)) return undefined;
-    // DON'T PUT ^^^ BEFORE THOSE ^^^ OR ALL HELL BREAKS LOOSE
-    // console.debug(`pieceToMove: ${JSON.stringify(pieceToMove)}`);
-
-    squareToMoveTo.piece = pieceToMove;
-    squareToMoveFrom.piece = undefined;
-    return board;
-};
-
-export { getNewBoard, movePiece };
+//         while (file >= 1 && file < 9 && rank >= 1 && rank < 9) {
+//             const testPiece = currentSquare.piece;
+//             if (testPiece) {
+//                 if (
+//                     testPiece.color !== kingColor && 
+//                     ((testPiece.description === 'rook' && (i < 4)) || 
+//                     (testPiece.description === 'bishop' && (i >= 4)) ||
+//                     testPiece.description === queen)) {
+//                     return true;
+//                 }
+//                 break;
+//             }
+//             file += directions[i][0];
+//             rank += directions[i][1];
+//         }
+//     }
+// }
+/* #endregion */
