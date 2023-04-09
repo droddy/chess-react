@@ -13,6 +13,7 @@ function App() {
   const [currentTeam, setCurrentTeam] = useState(Team.white);
   const [board, setBoard] = useState(GetNewBoard());
   const [heldPiece, setHeldPiece] = useState<Piece | undefined>(undefined);
+  const [moveHistory, setMoveHistory] = useState<{fromSquare: Square, toSquare: Square}[]>([])
 
   /* #region test moves */
   // let testMoves: any[][] = [];
@@ -61,6 +62,7 @@ function App() {
     setHeldPiece(undefined);
 
     if (!!newBoard) {
+      setMoveHistory([...moveHistory, {fromSquare, toSquare}]);
       setBoard(newBoard);
       setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
     }
@@ -70,6 +72,7 @@ function App() {
     console.clear();
     setBoard(GetNewBoard());
     setCurrentTeam(Team.white);
+    setMoveHistory([]);
   };
 
   const printRows = () => {
@@ -82,7 +85,8 @@ function App() {
           key={`row-${i}`}
           movePiece={move}
           holdPiece={holdPiece}
-          heldPiece={heldPiece} />
+          heldPiece={heldPiece} 
+          moveHistory={moveHistory} />
       );
     }
     return rows;

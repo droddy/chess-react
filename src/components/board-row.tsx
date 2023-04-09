@@ -22,10 +22,13 @@ type squareProps = {
     square: Square,
     holdPiece: (piece: Piece) => void,
     heldPiece: Piece | undefined,
-    movePiece: (fromSquare: Square, toSquare: Square) => void
+    movePiece: (fromSquare: Square, toSquare: Square) => void,
+    moveHistory: { fromSquare: Square, toSquare: Square }[],
+    rowIndex: number,
+    columnIndex: number
 };
 
-const BoardSquare: FC<squareProps> = ({ square, holdPiece, heldPiece, movePiece }) => {
+const BoardSquare: FC<squareProps> = ({ square, holdPiece, heldPiece, movePiece, moveHistory, rowIndex, columnIndex }) => {
     functionPrefix = 'BoardSquare -- '
     const symbol = square.piece?.symbol || '';
     const symbolNotHeld = 'App-symbolNotHeld';
@@ -61,23 +64,34 @@ const BoardSquare: FC<squareProps> = ({ square, holdPiece, heldPiece, movePiece 
             >
                 <BoardPiece
                     className={iHaveHeldPiece ? symbolHeld : symbolNotHeld}
-                    symbol={symbol} />
+                    symbol={symbol}
+                    key={`piece${rowIndex}${columnIndex}`} />
             </td>
         </>
     );
 };
 
-type rowProps = { 
-    row: Square[], 
-    rowIndex: number, 
-    holdPiece: (piece: Piece) => void, 
-    heldPiece: Piece | undefined, 
-    movePiece: (fromSquare: Square, toSquare: Square) => void };
-    
-const BoardRow: FC<rowProps> = ({ row, rowIndex, holdPiece, heldPiece, movePiece }) => {
+type rowProps = {
+    row: Square[],
+    rowIndex: number,
+    holdPiece: (piece: Piece) => void,
+    heldPiece: Piece | undefined,
+    movePiece: (fromSquare: Square, toSquare: Square) => void,
+    moveHistory: { fromSquare: Square, toSquare: Square }[]
+};
+
+const BoardRow: FC<rowProps> = ({ row, rowIndex, holdPiece, heldPiece, movePiece, moveHistory }) => {
     return (
         <>
             <tr>
+                {moveHistory.length !== 0 && rowIndex === 8 &&
+                    <td key='rowSpanCell' rowSpan={8}>{moveHistory.map(
+                        move => {
+                            return (<div key={`rowSpanDiv${move.fromSquare.file}${move.fromSquare.rank}-${move.toSquare.file}${move.toSquare.rank}`}> {move.fromSquare.file}{move.fromSquare.rank}-{move.toSquare.file}{move.toSquare.rank} </div>)
+                        }
+                    )}
+                    </td>
+                }
                 {
                     row.map((square, columnIndex) =>
                         <BoardSquare
@@ -86,6 +100,9 @@ const BoardRow: FC<rowProps> = ({ row, rowIndex, holdPiece, heldPiece, movePiece
                             movePiece={movePiece}
                             holdPiece={holdPiece}
                             heldPiece={heldPiece}
+                            moveHistory={moveHistory}
+                            rowIndex={rowIndex}
+                            columnIndex={columnIndex}
                         />
                     )}
             </tr>
