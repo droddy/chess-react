@@ -38,7 +38,7 @@
 
 .App-board-cell-black {
   width: 80px;
-  height: 80px;
+  max-height: 80px;
   background-color: darkgray;
   color: black;
   font-size: 2em;
@@ -115,4 +115,7 @@
 }
 .App-boardSymbolHeld {
   cursor: crosshair;
+}
+.trough {
+  overflow-y: scroll;
 }

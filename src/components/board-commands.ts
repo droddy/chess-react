@@ -1,6 +1,6 @@
 import { File, PieceDescription, Rank, Team } from "./enum";
 import { Pieces } from "./constants";
-import { Board, Square, Piece } from "./types";
+import { Board, Square, Piece } from "../types";
 const loggingPrefix = 'board-commands -- ';
 let functionPrefix = ' -- ';
 

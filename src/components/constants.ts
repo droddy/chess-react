@@ -1,5 +1,5 @@
 import { Team, PieceDescription, Rank, File } from './enum';
-import { Board, Piece } from './types';
+import { Board, Piece } from '../types';
 
 export const Pieces: Piece[] =
     [

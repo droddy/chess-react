@@ -1,10 +1,7 @@
 import { useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import BoardRow from './components/board-row';
-import { Team } from './enum';
-import { GetNewBoard, MovePiece } from './board-commands';
-import { Piece, Square } from './types';
+import { BoardRow, Team, Piece, Square, GetNewBoard, MovePiece } from './components';
 
 const loggingPrefix = 'App -- ';
 let functionPrefix = ' -- ';
