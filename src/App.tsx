@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import { BoardRow, Team, Piece, Square, GetNewBoard, MovePiece } from './components';
+import { BoardRow, Team, Piece, Square, GetNewBoard, MovePiece, Board } from './components';
 
 const loggingPrefix = 'App -- ';
 let functionPrefix = ' -- ';
 
 function App() {
   const [currentTeam, setCurrentTeam] = useState(Team.white);
-  const [board, setBoard] = useState(GetNewBoard());
+  const [board, setBoard] = useState<Board | undefined>(undefined);
   const [heldPiece, setHeldPiece] = useState<Piece | undefined>(undefined);
-  const [moveHistory, setMoveHistory] = useState<{fromSquare: Square, toSquare: Square}[]>([])
+  const [moveHistory, setMoveHistory] = useState<{ fromSquare: Square, toSquare: Square }[]>([])
 
   /* #region test moves */
   // let testMoves: any[][] = [];
@@ -51,23 +51,24 @@ function App() {
   // }
   /* #endregion */
 
-  const move = (fromSquare: Square, toSquare: Square) => {
+  const move = async (fromSquare: Square, toSquare: Square) => {
     functionPrefix = 'move -- '
     console.log(`${loggingPrefix}${functionPrefix}current team is : ${currentTeam}`);
-    const newBoard = MovePiece(fromSquare, toSquare, board, currentTeam);
+    const newBoard = !!board ? await MovePiece(fromSquare, toSquare, board, currentTeam) : undefined;
 
     setHeldPiece(undefined);
 
     if (!!newBoard) {
-      setMoveHistory([...moveHistory, {fromSquare, toSquare}]);
+      setMoveHistory([...moveHistory, { fromSquare, toSquare }]);
       setBoard(newBoard);
       setCurrentTeam(currentTeam === Team.black ? Team.white : Team.black);
     }
   }
 
-  const resetBoard = () => {
+  const resetBoard = async () => {
+    const newBoard = await GetNewBoard()
     console.clear();
-    setBoard(GetNewBoard());
+    setBoard(newBoard);
     setCurrentTeam(Team.white);
     setMoveHistory([]);
   };
@@ -77,12 +78,12 @@ function App() {
     for (let i = 8; i > 0; i--) {
       rows.push(
         <BoardRow
-          row={board.filter((square) => square.rank === i)}
+          row={!!board ? board.filter((square) => square.rank === i) : []}
           rowIndex={i}
           key={`row-${i}`}
           movePiece={move}
           holdPiece={holdPiece}
-          heldPiece={heldPiece} 
+          heldPiece={heldPiece}
           moveHistory={moveHistory} />
       );
     }
@@ -95,6 +96,13 @@ function App() {
     event.currentTarget.classList.toggle('App-boardNotClicked');
     event.currentTarget.classList.toggle('App-boardSymbolHeld');
   }
+  useEffect(() => {
+    const getBoard = async () => {
+      const newBoard = await GetNewBoard()
+      setBoard(newBoard)
+    }
+    getBoard()
+  }, [])
 
   return (
     <div className="App">

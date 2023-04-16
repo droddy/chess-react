@@ -9,14 +9,14 @@ export type RowProps = {
     rowIndex: number,
     holdPiece: (piece: Piece) => void,
     heldPiece: Piece | undefined,
-    movePiece: (fromSquare: Square, toSquare: Square) => void,
+    movePiece: (fromSquare: Square, toSquare: Square) => Promise<void>,
     moveHistory: { fromSquare: Square, toSquare: Square }[]
 };
 export type SquareProps = {
     square: Square,
     holdPiece: (piece: Piece) => void,
     heldPiece: Piece | undefined,
-    movePiece: (fromSquare: Square, toSquare: Square) => void,
+    movePiece: (fromSquare: Square, toSquare: Square) => Promise<void>,
     rowIndex: number,
     columnIndex: number
 };
